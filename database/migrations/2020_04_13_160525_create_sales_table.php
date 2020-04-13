@@ -17,9 +17,9 @@ class CreateSalesTable extends Migration
             $table->id('sale_id');
             $table->unsignedFloat('total');
             $table->string('rfc');
-            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('id');
             $table->timestamps();
-            $table->foreign('user_id')->references('user_id')->on('users');
+            $table->foreign('id')->references('id')->on('users');
             $table->foreign('rfc')->references('rfc')->on('clients');
             $table->engine = 'InnoDB';
             $table->charset = 'utf8mb4';
