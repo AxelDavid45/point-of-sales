@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use App\User;
 
 class DatabaseSeeder extends Seeder
 {
@@ -17,6 +18,7 @@ class DatabaseSeeder extends Seeder
                 'name'          => 'Axel Espinosa',
                 'email'         => 'axeldavid45@gmail.com',
                 'phone'         => '9611581478',
+                'email_verified_at' => time(),
                 'password'      => Hash::make('123456789'),
                 'administrator' => true
             ]
@@ -28,6 +30,7 @@ class DatabaseSeeder extends Seeder
                 'name'          => 'Cajero 1',
                 'email'         => 'cajero@cajero.com',
                 'phone'         => '9615545454',
+                'email_verified_at' => time(),
                 'password'      => Hash::make('123456789'),
                 'administrator' => false
             ]

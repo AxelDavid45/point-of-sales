@@ -20,7 +20,7 @@ class CreateUsersTable extends Migration
             $table->string('phone')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->boolean('administrator');
+            $table->boolean('administrator')->default(false);
             $table->rememberToken();
             $table->timestamps();
             $table->engine = 'InnoDB';
