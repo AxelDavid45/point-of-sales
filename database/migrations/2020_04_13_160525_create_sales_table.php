@@ -14,8 +14,16 @@ class CreateSalesTable extends Migration
     public function up()
     {
         Schema::create('sales', function (Blueprint $table) {
-            $table->id();
+            $table->id('sale_id');
+            $table->unsignedFloat('total');
+            $table->string('rfc');
+            $table->unsignedBigInteger('user_id');
             $table->timestamps();
+            $table->foreign('user_id')->references('user_id')->on('users');
+            $table->foreign('rfc')->references('rfc')->on('clients');
+            $table->engine = 'InnoDB';
+            $table->charset = 'utf8mb4';
+            $table->collation = 'utf8mb4_general_ci';
         });
     }
 
