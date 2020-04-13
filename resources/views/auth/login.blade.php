@@ -28,6 +28,14 @@
         <div class="card-body login-card-body">
             <p class="login-box-msg">Inicia sesión para comenzar a vender</p>
 
+            @if($errors->any())
+                <div class="alert-danger">
+                    @foreach($errors->all() as $error)
+                        - {{ $error }}
+                        @endforeach
+                </div>
+            @endif
+
             <form action="{{ route('login') }}" method="POST">
                 <div class="input-group mb-3">
                     <input type="email" class="form-control" value="{{ old('email') }}"
