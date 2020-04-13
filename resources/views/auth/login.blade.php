@@ -7,20 +7,31 @@
     <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <style>
+        .body {
+
+
+        }
+    </style>
 </head>
-<body class="hold-transition login-page">
+<body
+    style="background-image: url('https://images.unsplash.com/photo-1536939459926-301728717817?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80');
+           background-position: center;
+           background-size: cover;"
+    class="hold-transition login-page">
 <div class="login-box">
     <div class="login-logo">
-        <img src="" alt="">
+        <img style="width: 100%" src="{{ asset('storage/logotipo.png') }}" alt="">
     </div>
     <!-- /.login-logo -->
     <div class="card">
         <div class="card-body login-card-body">
-            <p class="login-box-msg">Sign in to start your session</p>
+            <p class="login-box-msg">Inicia sesión para comenzar a vender</p>
 
-            <form action="../../index3.html" method="post">
+            <form action="{{ route('login') }}" method="POST">
                 <div class="input-group mb-3">
-                    <input type="email" class="form-control" placeholder="Email">
+                    <input type="email" class="form-control" value="{{ old('email') }}"
+                           placeholder="Correo" name="email" required>
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-envelope"></span>
@@ -28,7 +39,9 @@
                     </div>
                 </div>
                 <div class="input-group mb-3">
-                    <input type="password" class="form-control" placeholder="Password">
+                    <input type="password" value="{{ old('password') }}" required
+                           class="form-control"
+                           placeholder="Contraseña" name="password">
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-lock"></span>
@@ -36,21 +49,20 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-8">
-                        <div class="icheck-primary">
-                            <input type="checkbox" id="remember">
-                            <label for="remember">
-                                Remember Me
-                            </label>
-                        </div>
+                    <div class="col">
+                        @csrf
+                        <input type="submit" class="btn btn-dark" value="Iniciar sesion">
                     </div>
-                    <!-- /.col -->
-                    <div class="col-4">
-                        <button type="submit" class="btn btn-primary btn-block">Sign In</button>
-                    </div>
-                    <!-- /.col -->
                 </div>
             </form>
+            <div class="row">
+                <div class="col">
+                    <a href="https://unsplash.com/photos/OTDyDgPoJ_0" class="text-muted text-sm">Photo
+                        by
+                        Jonathan
+                        Chng</a>
+                </div>
+            </div>
         </div>
         <!-- /.login-card-body -->
     </div>
