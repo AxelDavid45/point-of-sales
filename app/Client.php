@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Client extends Model
 {
+    protected $primaryKey = 'rfc';
+
     protected $fillable = [
         'rfc', 'name', 'email', 'phone', 'address'
     ];

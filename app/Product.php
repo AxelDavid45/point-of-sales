@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
+    protected $primaryKey = 'product_id';
+
     protected $fillable = [
         'name', 'description', 'product_left', 'price', 'cost', 'category_id'
     ];
-
-    protected $primaryKey = 'product_id';
 
     // This model can exists in N carts
     public function carts() {
