@@ -27,7 +27,7 @@
                                 agregar nuevo.
                             </p>
 
-                            <a href="#" class="btn btn-primary">
+                            <a href="{{ route('products.create') }}" class="btn btn-primary">
                                 <i class="fas fa-plus"></i>
                                 Agregar nuevo
                             </a>
