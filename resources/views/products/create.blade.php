@@ -15,6 +15,15 @@
                     </h1>
                 </div><!-- /.col -->
             </div><!-- /.row -->
+            @if(session('created'))
+                <div class="row">
+                    <div class="col-12">
+                        <div class="alert alert-success">
+                            Creado correctamente
+                        </div>
+                    </div>
+                </div>
+            @endif
         </div><!-- /.container-fluid -->
     </div>
     <!-- /.content-header -->
@@ -29,8 +38,15 @@
                         </div>
                         <!-- /.card-header -->
                         <!-- form start -->
-                        <form role="form">
+                        <form method="post" action="{{ route('products.store') }}">
                             <div class="card-body">
+                                @if($errors->any())
+                                    <div class="alert alert-danger">
+                                        @foreach($errors->all() as $error)
+                                            - {{ $error }} <br>
+                                        @endforeach
+                                    </div>
+                                @endif
                                 <div class="form-group">
                                     <label for="name">Nombre del producto</label>
                                     <input type="text" class="form-control"
@@ -79,9 +95,11 @@
                             <!-- /.card-body -->
 
                             <div class="card-footer">
+                                @csrf
                                 <button
                                     onclick="return confirm('¿Todos los datos son correctos?');"
-                                    type="submit" class="btn btn-primary">Guardar</button>
+                                    type="submit" class="btn btn-primary">Guardar
+                                </button>
                             </div>
                         </form>
                     </div>

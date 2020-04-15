@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Category;
 use App\Product;
+use App\Http\Requests\ProductoRequest;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -29,15 +30,14 @@ class ProductController extends Controller
         return view('products.create', compact('categories'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+    /*
+     *  Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ProductoRequest $request)
     {
-        //
+        //Store the product
+        Product::create($request->all());
+        return back()->with('created', true);
     }
 
     /**

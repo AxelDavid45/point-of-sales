@@ -17,7 +17,7 @@ class CreateProductsTable extends Migration
             $table->id('product_id');
             $table->string('name');
             $table->text('description')->nullable();
-            $table->integer('product_left');
+            $table->integer('product_left')->nullable();
             $table->unsignedFloat('price');
             $table->unsignedFloat('cost')->nullable();
             $table->unsignedBigInteger('category_id');
