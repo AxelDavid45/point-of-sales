@@ -12,7 +12,8 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::latest()->get();
+        $products = Product::latest()->paginate(6);
+
         return view('products.index', [
             'products' => $products
         ]);
@@ -73,12 +74,10 @@ class ProductController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  \App\Product  $product
-     * @return \Illuminate\Http\Response
      */
     public function destroy(Product $product)
     {
-        dd($product);
+        $product->delete();
+        return back()->with('error', false);
     }
 }

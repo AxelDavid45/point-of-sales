@@ -16,54 +16,50 @@
     <!-- Main content -->
     <div class="content">
         <div class="container-fluid">
+            {{ $products->links() }}
             <div class="row">
+                @foreach($products as $product)
+                    <div class="col-3">
+                        <div class="card">
+                            <div class="card-header bg-dark">
+                                Codigo: {{ $product->product_id }}
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">{{ $product->name }}</h5>
 
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">Mis productos</h3>
-
-                            <div class="card-tools">
-                                <div class="input-group input-group-sm" style="width: 150px;">
-                                    <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
-
-                                    <div class="input-group-append">
-                                        <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
+                                <p class="card-text">
+                                    {{ $product->get_extract }}
+                                </p>
+                            </div>
+                            <div class="card-footer">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <form action="{{ route('products.destroy', $product) }}"
+                                              method="POST"
+                                        >
+                                            @csrf
+                                            @method('DELETE')
+                                            <input
+                                            onclick="return confirm('¿Deseas eliminar este ' +
+                                             'elemento?');"
+                                            type="submit" value="Eliminar"
+                                            class="btn btn-danger">
+                                        </form>
+                                    </div>
+                                    <div class="col-6">
+                                        <a
+                                            class="btn btn-warning"
+                                            href="{{ route('products.edit', $product) }}">
+                                            Editar
+                                        </a>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <!-- /.card-header -->
-                        <div class="card-body table-responsive p-0">
-                            <table class="table table-hover text-nowrap">
-                                <thead>
-                                <tr>
-                                    <th>Código</th>
-                                    <th>Nombre</th>
-                                    <th>Descripción</th>
-                                    <th colspan="2">Acciones</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                @foreach($products as $product)
-                                    <tr>
-                                        <td>{{ $product->product_id }}</td>
-                                        <td>{{ $product->name }}</td>
-                                        <td>{{ $product->get_extract }}</td>
-                                        <td>
-                                            <form action="{{ route('pr') }}" method="post"></form>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                        <!-- /.card-body -->
                     </div>
-                    <!-- /.card -->
-                </div>
-
+                @endforeach
             </div>
+            {{ $products->links() }}
         </div><!-- /.container-fluid -->
     </div>
     <!-- /.content -->
