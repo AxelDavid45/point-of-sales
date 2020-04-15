@@ -6,7 +6,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0 text-dark">Productos</h1>
+                    <h1 class="m-0 text-dark">Productos
+                        <a class="btn btn-success btn-sm" href="{{ route('products.create') }}">
+                            <i class="fas fa-plus"></i>
+                            Agregar un producto
+                        </a>
+                    </h1>
                 </div><!-- /.col -->
             </div><!-- /.row -->
         </div><!-- /.container-fluid -->
