@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Category;
+use App\Http\Requests\ProductRequest;
 use App\Product;
-use App\Http\Requests\ProductoRequest;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -33,7 +33,7 @@ class ProductController extends Controller
     /*
      *  Store a newly created resource in storage.
      */
-    public function store(ProductoRequest $request)
+    public function store(ProductRequest $request)
     {
         //Store the product
         Product::create($request->all());
@@ -43,7 +43,7 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Product  $product
+     * @param \App\Product $product
      * @return \Illuminate\Http\Response
      */
     public function show(Product $product)
@@ -54,7 +54,7 @@ class ProductController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Product  $product
+     * @param \App\Product $product
      * @return \Illuminate\Http\Response
      */
     public function edit(Product $product)
@@ -63,16 +63,12 @@ class ProductController extends Controller
         return view('products.edit', compact('product', 'categories'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Product  $product
-     * @return \Illuminate\Http\Response
+    /*
+    * Update the specified resource in storage.
      */
-    public function update(Request $request, Product $product)
+    public function update(ProductRequest $request, Product $product)
     {
-        //
+        dd($request)
     }
 
     /**
