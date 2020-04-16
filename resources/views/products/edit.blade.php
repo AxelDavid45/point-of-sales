@@ -15,7 +15,7 @@
                     </h1>
                 </div><!-- /.col -->
             </div><!-- /.row -->
-            @if(session('edited'))
+            @if(session('updated'))
                 <div class="row">
                     <div class="col-12">
                         <div class="alert alert-success">
