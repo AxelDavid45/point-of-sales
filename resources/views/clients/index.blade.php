@@ -23,23 +23,19 @@
         <div class="container-fluid">
             {{ $products->links() }}
             <div class="row">
-                @foreach($products as $product)
+                @foreach($clients as $client)
                     <div class="col-3">
                         <div class="card">
                             <div class="card-header bg-dark">
-                                Codigo: {{ $product->product_id }}
+                                RFC: {{ $client->rfc }}
                             </div>
                             <div class="card-body">
-                                <h5 class="card-title">{{ $product->name }}</h5>
-
-                                <p class="card-text">
-                                    {{ $product->get_extract }}
-                                </p>
+                                <h5 class="card-title">{{ $client->name }}</h5>
                             </div>
                             <div class="card-footer">
                                 <div class="row">
                                     <div class="col-6">
-                                        <form action="{{ route('products.destroy', $product) }}"
+                                        <form action="{{ route('clients.destroy', $client) }}"
                                               method="POST"
                                         >
                                             @csrf
@@ -54,7 +50,7 @@
                                     <div class="col-6">
                                         <a
                                             class="btn btn-warning"
-                                            href="{{ route('products.edit', $product) }}">
+                                            href="{{ route('clients.edit', $client) }}">
                                             Editar
                                         </a>
                                     </div>
