@@ -63,6 +63,15 @@
                     data-accordion="false">
 
                     <li class="nav-item">
+                        <a href="{{ route('clients.index') }}" class="nav-link">
+                            <i class="fa fa-boxes nav-icon"></i>
+                            <p>
+                                Clientes
+                            </p>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
                         <a href="{{ route('products.index') }}" class="nav-link">
                             <i class="fa fa-boxes nav-icon"></i>
                             <p>
