@@ -32,7 +32,7 @@
     <div class="content">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-md-5">
+                <div class="col-md-6">
                     <div class="card card-primary">
                         <div class="card-header">
                         </div>
@@ -65,38 +65,38 @@
                                             <th>ID</th>
                                             <th>Nombre</th>
                                             <th>Cantidad</th>
+                                            <th>Acción</th>
                                         </tr>
                                         </thead>
-                                        <tbody>
-                                        <tr>
-                                            <td>05</td>
-                                            <td>Prueba</td>
-                                            <td>
-                                                <input type="number" class="form-control-sm"
-                                                       value="1">
-                                            </td>
-                                        </tr>
+                                        <tbody id="cartTable">
                                         </tbody>
                                     </table>
                                 </div>
-
+                                <div class="form-group text-right">
+                                    <h5>TOTAL $<span id="cartTotal" class="text-bold">50</span></h5>
+                                </div>
                             </div>
                             <!-- /.card-body -->
 
                             <div class="card-footer">
+
                                 @csrf
                                 <button
                                     onclick="return confirm('¿Todos los datos son correctos?');"
                                     type="submit" class="btn btn-primary">Guardar
                                 </button>
+
                             </div>
                         </form>
                     </div>
                 </div>
-                <div class="col-md-7">
+
+
+
+                <div class="col-md-6">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">Fixed Header Table</h3>
+                            <h3 class="card-title">Tabla de productos</h3>
 
                             <div class="card-tools">
                                 <div class="input-group input-group-sm" style="width: 150px;">
@@ -128,7 +128,12 @@
                                         <td>{{ $product->name }}</td>
                                         <td>{{ $product->product_left }}</td>
                                         <td>
-                                            <button class="btn btn-success btn-sm">
+                                            <button class="btn btn-success btn-sm"
+                                                    data-name="{{ $product->name }}"
+                                                    data-price="{{ $product->price }}"
+                                                    data-id="{{ $product->product_id }}"
+                                                    data-left="{{ $product->product_left }}"
+                                            >
                                                 <i class="fas fa-plus"></i>
                                                 Agregar
                                             </button>
@@ -146,5 +151,7 @@
         </div><!-- /.container-fluid -->
     </div>
     <!-- /.content -->
+
+    <script src="{{ asset('js/sales.js') }}"></script>
 @endsection
 
