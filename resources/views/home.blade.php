@@ -70,6 +70,23 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Agregar cliente</h5>
+
+                            <p class="card-text">
+                                Para poder agregar un cliente da clic al boton de agregar cliente
+                            </p>
+
+                            <a href="{{ route('clients.create') }}" class="btn btn-primary">
+                                <i class="fas fa-user-plus"></i>
+                                Agregar cliente
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div><!-- /.container-fluid -->
     </div>
