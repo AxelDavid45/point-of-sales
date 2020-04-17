@@ -38,7 +38,7 @@
                         </div>
                         <!-- /.card-header -->
                         <!-- form start -->
-                        <form method="post" action="{{ route('sales.store') }}">
+
                             <div class="card-body">
                                 @if($errors->any())
                                     <div class="alert alert-danger">
@@ -77,7 +77,7 @@
                                 </div>
                             </div>
                             <!-- /.card-body -->
-
+                        <form method="post" action="{{ route('sales.store') }}">
                             <div class="card-footer">
 
                                 @csrf

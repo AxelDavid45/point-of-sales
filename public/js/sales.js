@@ -3,19 +3,35 @@ const cartTable = document.querySelector('#cartTable');
 const cartTotal = document.querySelector("#cartTotal");
 
 if (productsTable) {
-    productsTable.addEventListener('click', addProduct);
+    productsTable.addEventListener('click', addToCartOneProduct);
     cartTable.addEventListener('click', cartEvents);
 }
 
 function cartEvents(e) {
-    if(e.target.classList[2] == 'delete') {
+    if (e.target.classList[2] == 'delete') {
         deleteProductCart(e);
     }
+
+    if (e.target.classList[0] === 'sum') {
+        addOneProduct(e);
+    }
+
+}
+
+function addOneProduct(e) {
+    let amountOfProductNumeric = parseFloat(e.target.parentElement.childNodes[3].innerText);
+    let amountOfProductElement = e.target.parentElement.childNodes[3];
+    let productPrice = parseFloat(e.target.dataset.price);
+    let productObject = {'price': productPrice};
+
+     amountOfProductElement.innerText = amountOfProductNumeric + 1;
+    updateTotal(productObject, '+');
+
+    console.log(e.target.parentElement);
 }
 
 
-
-function addProduct(e) {
+function addToCartOneProduct(e) {
     let btnAdd = e.target;
 
     if (btnAdd.classList[0] == 'btn') {
@@ -37,11 +53,11 @@ function addProduct(e) {
         <tr>
             <td>${product.id}</td>
             <td>${product.name}</td>
-            <td>
+            <td class="productControls">
                 <p>
-                <button class="btn btn-sm btn-primary">+</button>
-                <span class="text-bold rowItems"> 1 </span>
-                <button class="btn btn-sm btn-warning">-</button>
+                <button data-price="${product.price}" class="sum btn btn-sm btn-primary">+</button>
+                <span class="text-bold">1</span>
+                <button data-price="${product.price}" class="subs btn btn-sm btn-warning">-</button>
                 </p>
             </td>
             <td>
@@ -84,21 +100,21 @@ function updateTotal(product, type) {
 function deleteProductCart(e) {
     e.preventDefault();
     let btnDelete = e.target;
-        //Create the product object
-        let product = {
-            'id': btnDelete.dataset.id,
-            'name': btnDelete.dataset.name,
-            'left': btnDelete.dataset.left,
-            'price': btnDelete.dataset.price
-        };
+    //Create the product object
+    let product = {
+        'id': btnDelete.dataset.id,
+        'name': btnDelete.dataset.name,
+        'left': btnDelete.dataset.left,
+        'price': btnDelete.dataset.price
+    };
 
-        updateTotal(product, '-');
+    updateTotal(product, '-');
 
-        //Get the whole row of a product
-        let productRow = btnDelete.parentElement.parentElement.parentElement;
-        //Add the product again to the table products
-        fillTableProducts(product);
-        productRow.remove();
+    //Get the whole row of a product
+    let productRow = btnDelete.parentElement.parentElement.parentElement;
+    //Add the product again to the table products
+    fillTableProducts(product);
+    productRow.remove();
 }
 
 function fillTableProducts(product) {
