@@ -14,6 +14,24 @@
                     </h1>
                 </div><!-- /.col -->
             </div><!-- /.row -->
+            @if(session('updated'))
+                <div class="row">
+                    <div class="col-12">
+                        <div class="alert alert-success">
+                            Editado correctamente
+                        </div>
+                    </div>
+                </div>
+            @endif
+            @if(session('deleted'))
+                <div class="row">
+                    <div class="col-12">
+                        <div class="alert alert-success">
+                            Borrado correctamente
+                        </div>
+                    </div>
+                </div>
+            @endif
         </div><!-- /.container-fluid -->
     </div>
     <!-- /.content-header -->

@@ -64,7 +64,7 @@
 
                     <li class="nav-item">
                         <a href="{{ route('clients.index') }}" class="nav-link">
-                            <i class="fa fa-boxes nav-icon"></i>
+                            <i class="fa fa-user-friends nav-icon"></i>
                             <p>
                                 Clientes
                             </p>

@@ -14,9 +14,7 @@ class ClientController extends Controller
     public function index()
     {
         $clients = Client::latest()->get();
-        return view('clients.index', [
-            'clients' => $clients
-        ]);
+        return view('clients.index', compact('clients'));
     }
 
     /*
@@ -57,29 +55,29 @@ class ClientController extends Controller
      */
     public function edit(Client $client)
     {
-        //
+        return view('clients.edit', compact('client'));
     }
 
-    /**
+    /*
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Client  $client
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Client $client)
+    public function update(ClientRequest $request, Client $client)
     {
-        //
+        $client->update($request->all());
+
+        return redirect()->route('clients.index')->with('updated', true);
     }
 
-    /**
+    /*
      * Remove the specified resource from storage.
-     *
-     * @param  \App\Client  $client
-     * @return \Illuminate\Http\Response
      */
     public function destroy(Client $client)
     {
-        //
+        $client->delete();
+        return back()->with('deleted', true);
     }
 }

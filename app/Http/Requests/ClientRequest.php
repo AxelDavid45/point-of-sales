@@ -26,8 +26,8 @@ class ClientRequest extends FormRequest
         return [
             'rfc' => ['required', 'string'],
             'name' => ['required', 'string'],
-            'email' => ['nullable', 'email:rfc,dns', 'unique:clients,email'],
-            'phone' => ['nullable', 'numeric', 'unique:clients,phone'],
+            'email' => ['nullable', 'email:rfc,dns'],
+            'phone' => ['nullable', 'numeric'],
             'address' => ['nullable', 'string']
         ];
     }
