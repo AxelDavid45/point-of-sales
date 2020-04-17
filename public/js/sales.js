@@ -12,19 +12,24 @@ function addProduct(e) {
     let btnAdd = e.target;
 
     if (btnAdd.classList[0] == 'btn') {
-        // Get the product information
-        let productId = btnAdd.dataset.id,
-            productName = btnAdd.dataset.name,
-            productLeft = btnAdd.dataset.left,
-            productPrice = btnAdd.dataset.price,
-            productRow = btnAdd.parentElement.parentElement;
+        let product = {
+            'id': btnAdd.dataset.id,
+            'name': btnAdd.dataset.name,
+            'left': btnAdd.dataset.left,
+            'price': btnAdd.dataset.price
+        };
+
+        updateTotal(product, '+');
+
+        //Get the whole row of a product
+        let productRow = btnAdd.parentElement.parentElement;
 
 
         //Append the new product to the cart table
         cartTable.innerHTML += `
         <tr>
-            <td>${productId}</td>
-            <td>${productName}</td>
+            <td>${product.id}</td>
+            <td>${product.name}</td>
             <td>
                 <p>
                 <button class="btn btn-sm btn-primary">+</button>
@@ -35,10 +40,10 @@ function addProduct(e) {
             <td>
                  <button class="btn btn-danger">
                     <i class="fas fa-trash-alt delete"
-                        data-name="${productName}"
-                         data-id="${productId}"
-                         data-price="${productPrice}"
-                         data-left="${productLeft}"
+                        data-name="${product.name}"
+                         data-id="${product.id}"
+                         data-price="${product.price}"
+                         data-left="${product.left}"
                     ></i>
                  </button>
              </td>
@@ -47,6 +52,26 @@ function addProduct(e) {
         //Remove the product selected in the table products
         productRow.remove();
     }
+}
+
+function updateTotal(product, type) {
+    let total = document.querySelector('#cartTotal');
+    let totalUpdated = 0;
+    console.log(total.innerText);
+    console.log(product.price);
+
+    if (type === '-') {
+        totalUpdated = parseFloat(product.price) - parseFloat(total.innerText);
+    }
+    if (type === '+') {
+        totalUpdated = parseFloat(product.price) + parseFloat(total.innerText);
+    }
+
+    if (totalUpdated < 0) {
+        totalUpdated *= -1;
+    }
+    total.innerText = totalUpdated;
+
 }
 
 function deleteProductCart(e) {
@@ -61,6 +86,9 @@ function deleteProductCart(e) {
             'left': btnDelete.dataset.left,
             'price': btnDelete.dataset.price
         };
+
+        updateTotal(product, '-');
+
         //Get the whole row of a product
         let productRow = btnDelete.parentElement.parentElement.parentElement;
         //Add the product again to the table products

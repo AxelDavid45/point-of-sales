@@ -73,7 +73,7 @@
                                     </table>
                                 </div>
                                 <div class="form-group text-right">
-                                    <h5>TOTAL $<span id="cartTotal" class="text-bold">50</span></h5>
+                                    <h5>TOTAL $<span id="cartTotal" class="text-bold">0</span></h5>
                                 </div>
                             </div>
                             <!-- /.card-body -->
