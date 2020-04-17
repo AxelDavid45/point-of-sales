@@ -4,8 +4,15 @@ const cartTotal = document.querySelector("#cartTotal");
 
 if (productsTable) {
     productsTable.addEventListener('click', addProduct);
-    cartTable.addEventListener('click', deleteProductCart);
+    cartTable.addEventListener('click', cartEvents);
 }
+
+function cartEvents(e) {
+    if(e.target.classList[2] == 'delete') {
+        deleteProductCart(e);
+    }
+}
+
 
 
 function addProduct(e) {
@@ -76,9 +83,7 @@ function updateTotal(product, type) {
 
 function deleteProductCart(e) {
     e.preventDefault();
-
     let btnDelete = e.target;
-    if (btnDelete.classList[2] == 'delete') {
         //Create the product object
         let product = {
             'id': btnDelete.dataset.id,
@@ -94,7 +99,6 @@ function deleteProductCart(e) {
         //Add the product again to the table products
         fillTableProducts(product);
         productRow.remove();
-    }
 }
 
 function fillTableProducts(product) {
