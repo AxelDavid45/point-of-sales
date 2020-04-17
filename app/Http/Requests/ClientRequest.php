@@ -24,7 +24,11 @@ class ClientRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'rfc' => ['required', 'string'],
+            'name' => ['required', 'string'],
+            'email' => ['nullable', 'email:rfc,dns', 'unique:clients,email'],
+            'phone' => ['nullable', 'numeric', 'unique:clients,phone'],
+            'address' => ['nullable', 'string']
         ];
     }
 }

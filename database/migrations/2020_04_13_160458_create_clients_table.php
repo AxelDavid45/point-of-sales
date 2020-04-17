@@ -18,7 +18,7 @@ class CreateClientsTable extends Migration
             $table->string('name');
             $table->string('email')->unique()->nullable();
             $table->string('phone')->unique()->nullable();
-            $table->mediumText('address');
+            $table->mediumText('address')->nullable();
             $table->timestamps();
             $table->primary('rfc');
             $table->engine = 'InnoDB';

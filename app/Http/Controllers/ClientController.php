@@ -3,40 +3,39 @@
 namespace App\Http\Controllers;
 
 use App\Client;
+use App\Http\Requests\ClientRequest;
 use Illuminate\Http\Request;
 
 class ClientController extends Controller
 {
-    /**
+    /*
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        //
+        $clients = Client::latest()->get();
+        return view('clients.index', [
+            'clients' => $clients
+        ]);
     }
 
-    /**
+    /*
      * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function create()
     {
-        $clients = Client::all();
-        return view('clients.index', compact('clients'));
+        return view('clients.create');
     }
 
-    /**
+    /*
      * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ClientRequest $request)
     {
-        //
+
+        Client::create($request->all());
+
+        return back()->with('created', true);
     }
 
     /**

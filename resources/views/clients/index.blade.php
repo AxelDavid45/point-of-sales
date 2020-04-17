@@ -7,7 +7,7 @@
             <div class="row mb-2">
                 <div class="col-sm-6">
                     <h1 class="m-0 text-dark">Clientes
-                        <a class="btn btn-success btn-sm" href="{{ route('clients.index') }}">
+                        <a class="btn btn-success btn-sm" href="{{ route('clients.create') }}">
                             <i class="fas fa-plus"></i>
                             Agregar un cliente
                         </a>
@@ -21,7 +21,6 @@
     <!-- Main content -->
     <div class="content">
         <div class="container-fluid">
-            {{ $products->links() }}
             <div class="row">
                 @foreach($clients as $client)
                     <div class="col-3">
@@ -60,7 +59,6 @@
                     </div>
                 @endforeach
             </div>
-            {{ $products->links() }}
         </div><!-- /.container-fluid -->
     </div>
     <!-- /.content -->

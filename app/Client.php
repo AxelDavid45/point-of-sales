@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Client extends Model
 {
     protected $primaryKey = 'rfc';
+    public $incrementing = false;
 
     protected $fillable = [
         'rfc', 'name', 'email', 'phone', 'address'
@@ -16,4 +17,6 @@ class Client extends Model
     public function sales() {
         return $this->hasMany('App\Sale');
     }
+
+
 }
