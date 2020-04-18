@@ -13,21 +13,45 @@ function cartEvents(e) {
     }
 
     if (e.target.classList[0] === 'sum') {
-        addOneProduct(e);
+        modifyAmountOfProduct(e, '+');
+    }
+
+    if (e.target.classList[0] === 'subs') {
+        modifyAmountOfProduct(e, '-');
     }
 
 }
 
-function addOneProduct(e) {
+function modifyAmountOfProduct(e, modifier) {
+    //Get the current amount of product
     let amountOfProductNumeric = parseFloat(e.target.parentElement.childNodes[3].innerText);
+    //Get the element with the amount of product
     let amountOfProductElement = e.target.parentElement.childNodes[3];
+    //Get the price of the product
     let productPrice = parseFloat(e.target.dataset.price);
-    let productObject = {'price': productPrice};
+    // Create a object for update the total
+    let productObject = {
+        'id': e.target.dataset.id,
+        'name': e.target.dataset.name,
+        'left': e.target.dataset.left,
+        'price': productPrice
+    };
+    let finalAmount = 1;
+    
+    if (modifier === '+') {
+        finalAmount = amountOfProductNumeric + 1;
+        updateTotal(productObject, '+');
+    }
+    if (modifier === '-') {
+        finalAmount = amountOfProductNumeric - 1;
+        updateTotal(productObject, '-');
+    }
 
-     amountOfProductElement.innerText = amountOfProductNumeric + 1;
-    updateTotal(productObject, '+');
-
-    console.log(e.target.parentElement);
+    if (finalAmount === 0) {
+        e.target.parentElement.parentElement.parentElement.remove();
+        fillTableProducts(productObject);
+    }
+    amountOfProductElement.innerText = finalAmount;
 }
 
 
@@ -55,15 +79,25 @@ function addToCartOneProduct(e) {
             <td>${product.name}</td>
             <td class="productControls">
                 <p>
-                <button data-price="${product.price}" class="sum btn btn-sm btn-primary">+</button>
+                <button
+                         data-name="${product.name}"
+                         data-id="${product.id}"
+                         data-price="${product.price}"
+                         data-left="${product.left}"
+                class="sum btn btn-sm btn-primary">+</button>
                 <span class="text-bold">1</span>
-                <button data-price="${product.price}" class="subs btn btn-sm btn-warning">-</button>
+                <button
+                         data-name="${product.name}"
+                         data-id="${product.id}"
+                         data-price="${product.price}"
+                         data-left="${product.left}"
+                class="subs btn btn-sm btn-warning">-</button>
                 </p>
             </td>
             <td>
                  <button class="btn btn-danger">
                     <i class="fas fa-trash-alt delete"
-                        data-name="${product.name}"
+                         data-name="${product.name}"
                          data-id="${product.id}"
                          data-price="${product.price}"
                          data-left="${product.left}"
