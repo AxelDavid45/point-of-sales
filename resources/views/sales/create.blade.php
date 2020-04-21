@@ -39,17 +39,19 @@
                         <!-- /.card-header -->
                         <!-- form start -->
 
-                            <div class="card-body">
-                                @if($errors->any())
-                                    <div class="alert alert-danger">
-                                        @foreach($errors->all() as $error)
-                                            - {{ $error }} <br>
-                                        @endforeach
-                                    </div>
-                                @endif
+                        <div class="card-body">
+                            @if($errors->any())
+                                <div class="alert alert-danger">
+                                    @foreach($errors->all() as $error)
+                                        - {{ $error }} <br>
+                                    @endforeach
+                                </div>
+                            @endif
+                            <form method="post" action="#"
+                                  id="createSaleForm">
                                 <div class="form-group">
                                     <label for="rfc">Cliente</label>
-                                    <select required name="rfc" class="form-control">
+                                    <select id="rfc"  name="rfc" class="form-control">
                                         <option value="">Seleccione una opción</option>
                                         @foreach($clients as $client)
                                             <option value="{{ $client->rfc }}">
@@ -75,80 +77,74 @@
                                 <div class="form-group text-right">
                                     <h5>TOTAL $<span id="cartTotal" class="text-bold">0</span></h5>
                                 </div>
-                            </div>
-                            <!-- /.card-body -->
-                        <form method="post" action="{{ route('sales.store') }}">
-                            <div class="card-footer">
-
-                                @csrf
-                                <button
-                                    onclick="return confirm('¿Todos los datos son correctos?');"
-                                    type="submit" class="btn btn-primary">Guardar
-                                </button>
-
-                            </div>
-                        </form>
-                    </div>
+                    <!-- /.card-body -->
+                        <div class="card-footer">
+                            @csrf
+                            <button
+                                type="submit" class="btn btn-primary">Guardar
+                            </button>
+                        </div>
+                    </form>
                 </div>
+            </div>
+        </div>
 
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Tabla de productos</h3>
 
+                <div class="card-tools">
+                    <div class="input-group input-group-sm" style="width: 150px;">
+                        <input type="text" name="table_search"
+                               class="form-control float-right" placeholder="Search">
 
-                <div class="col-md-6">
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">Tabla de productos</h3>
-
-                            <div class="card-tools">
-                                <div class="input-group input-group-sm" style="width: 150px;">
-                                    <input type="text" name="table_search"
-                                           class="form-control float-right" placeholder="Search">
-
-                                    <div class="input-group-append">
-                                        <button type="submit" class="btn btn-default"><i
-                                                class="fas fa-search"></i></button>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-default"><i
+                                    class="fas fa-search"></i></button>
                         </div>
-                        <!-- /.card-header -->
-                        <div class="card-body table-responsive p-0" style="height: 300px;">
-                            <table class="table table-head-fixed text-nowrap">
-                                <thead>
-                                <tr>
-                                    <th>Código</th>
-                                    <th>Nombre</th>
-                                    <th>Existencia</th>
-                                    <th colspan="2">Acciones</th>
-                                </tr>
-                                </thead>
-                                <tbody id="products-table">
-                                @foreach($products as $product)
-                                    <tr>
-                                        <td>{{ $product->product_id }}</td>
-                                        <td>{{ $product->name }}</td>
-                                        <td>{{ $product->product_left }}</td>
-                                        <td>
-                                            <button class="btn btn-success btn-sm"
-                                                    data-name="{{ $product->name }}"
-                                                    data-price="{{ $product->price }}"
-                                                    data-id="{{ $product->product_id }}"
-                                                    data-left="{{ $product->product_left }}"
-                                            >
-                                                <i class="fas fa-plus"></i>
-                                                Agregar
-                                            </button>
-                                        </td>
-                                    </tr>
-                                @endforeach
-
-                                </tbody>
-                            </table>
-                        </div>
-                        <!-- /.card-body -->
                     </div>
                 </div>
             </div>
-        </div><!-- /.container-fluid -->
+            <!-- /.card-header -->
+            <div class="card-body table-responsive p-0" style="height: 300px;">
+                <table class="table table-head-fixed text-nowrap">
+                    <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Nombre</th>
+                        <th>Existencia</th>
+                        <th colspan="2">Acciones</th>
+                    </tr>
+                    </thead>
+                    <tbody id="products-table">
+                    @foreach($products as $product)
+                        <tr>
+                            <td>{{ $product->product_id }}</td>
+                            <td>{{ $product->name }}</td>
+                            <td>{{ $product->product_left }}</td>
+                            <td>
+                                <button class="btn btn-success btn-sm"
+                                        data-name="{{ $product->name }}"
+                                        data-price="{{ $product->price }}"
+                                        data-id="{{ $product->product_id }}"
+                                        data-left="{{ $product->product_left }}"
+                                >
+                                    <i class="fas fa-plus"></i>
+                                    Agregar
+                                </button>
+                            </td>
+                        </tr>
+                    @endforeach
+
+                    </tbody>
+                </table>
+            </div>
+            <!-- /.card-body -->
+        </div>
+    </div>
+    </div>
+    </div><!-- /.container-fluid -->
     </div>
     <!-- /.content -->
 

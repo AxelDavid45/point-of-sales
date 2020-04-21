@@ -3,9 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Client;
+use App\Http\Requests\SaleRequest;
 use App\Product;
 use App\Sale;
 use Illuminate\Http\Request;
+
+use Illuminate\Support\Facades\Validator;
+
+use function GuzzleHttp\Promise\all;
 
 class SaleController extends Controller
 {
@@ -30,21 +35,25 @@ class SaleController extends Controller
         return view('sales.create', compact('clients', 'products'));
     }
 
-    /**
+    /*
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(SaleRequest $request)
     {
-        //
+
+        dd($request->all());
+
+
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Sale  $sale
+     * @param \App\Sale $sale
+     *
      * @return \Illuminate\Http\Response
      */
     public function show(Sale $sale)
@@ -55,7 +64,8 @@ class SaleController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Sale  $sale
+     * @param \App\Sale $sale
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit(Sale $sale)
@@ -66,8 +76,9 @@ class SaleController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Sale  $sale
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Sale                $sale
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Sale $sale)
@@ -78,7 +89,8 @@ class SaleController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Sale  $sale
+     * @param \App\Sale $sale
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy(Sale $sale)

@@ -77,7 +77,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
+                        <a href="{{ route('sales.index') }}" class="nav-link">
                             <i class="nav-icon fa fa-sellsy"></i>
                             <p>
                                 Ventas

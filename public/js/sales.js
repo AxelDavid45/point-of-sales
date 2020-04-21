@@ -1,14 +1,60 @@
 const productsTable = document.querySelector('#products-table');
 const cartTable = document.querySelector('#cartTable');
-const cartTotal = document.querySelector("#cartTotal");
+const createSaleForm = document.querySelector('#createSaleForm');
 
 if (productsTable) {
     productsTable.addEventListener('click', addToCartOneProduct);
     cartTable.addEventListener('click', cartEvents);
+    createSaleForm.addEventListener('submit', storeSale);
+}
+
+function storeSale(e) {
+    e.preventDefault();
+    const route = '/sales';
+    // Select all the products in the cart
+    let products = document.querySelectorAll('.product');
+    let clientRfc = document.querySelector('#rfc').value;
+    let productArray = [];
+    let token = document.getElementsByName('_token')[0].value;
+    let cartTotal = document.querySelector('#cartTotal').innerText;
+
+    //Fill the product array with every product data
+    products.forEach((product, index) => {
+        let productId = product.children[0].innerText;
+        let productAmount = product.children[2].children[0].children[1].innerText;
+        productArray.push({
+            'id': productId,
+            'amount': productAmount
+        });
+    });
+
+
+    // //Create the form data
+    const formData = new FormData();
+    // //Fill the formdata
+    formData.append('rfc', clientRfc);
+    formData.append('products', JSON.stringify(productArray));
+    formData.append('total', cartTotal);
+    formData.append('_token', token);
+
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', route, true);
+    xhr.setRequestHeader('X-CSRF-TOKEN', token);
+    xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+    xhr.onload = function () {
+        if (this.status === 200) {
+            console.log(this.response);
+        }
+        if (this.status === 422) {
+            console.log(JSON.parse(this.response));
+        }
+    };
+    xhr.send(formData);
 }
 
 function cartEvents(e) {
-    if (e.target.classList[2] == 'delete') {
+    e.preventDefault();
+    if (e.target.classList[2] === 'delete') {
         deleteProductCart(e);
     }
 
@@ -23,6 +69,7 @@ function cartEvents(e) {
 }
 
 function modifyAmountOfProduct(e, modifier) {
+    e.preventDefault();
     //Get the current amount of product
     let amountOfProductNumeric = parseFloat(e.target.parentElement.childNodes[3].innerText);
     //Get the element with the amount of product
@@ -37,7 +84,7 @@ function modifyAmountOfProduct(e, modifier) {
         'price': productPrice
     };
     let finalAmount = 1;
-    
+
     if (modifier === '+') {
         finalAmount = amountOfProductNumeric + 1;
         updateTotal(productObject, '+');
@@ -56,9 +103,10 @@ function modifyAmountOfProduct(e, modifier) {
 
 
 function addToCartOneProduct(e) {
+    e.preventDefault();
     let btnAdd = e.target;
 
-    if (btnAdd.classList[0] == 'btn') {
+    if (btnAdd.classList[0] === 'btn') {
         let product = {
             'id': btnAdd.dataset.id,
             'name': btnAdd.dataset.name,
@@ -74,8 +122,8 @@ function addToCartOneProduct(e) {
 
         //Append the new product to the cart table
         cartTable.innerHTML += `
-        <tr>
-            <td>${product.id}</td>
+        <tr class="product">
+            <td class="productId">${product.id}</td>
             <td>${product.name}</td>
             <td class="productControls">
                 <p>
@@ -85,7 +133,7 @@ function addToCartOneProduct(e) {
                          data-price="${product.price}"
                          data-left="${product.left}"
                 class="sum btn btn-sm btn-primary">+</button>
-                <span class="text-bold">1</span>
+                <span class="productAmount text-bold">1</span>
                 <button
                          data-name="${product.name}"
                          data-id="${product.id}"

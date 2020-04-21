@@ -43,7 +43,7 @@
                                 Para poder realizar una venta da clic al boton de crear venta.
                             </p>
 
-                            <a href="#" class="btn btn-primary">
+                            <a href="{{ route('sales.create') }}" class="btn btn-primary">
                                 <i class="fas fa-cash-register"></i>
                                 Crear Venta
                             </a>
