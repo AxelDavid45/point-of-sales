@@ -41,9 +41,6 @@
 
                         <div class="card-body">
                             <div id="js-requests-messages">
-                                <div class="alert alert-danger">
-                                    prueba
-                                </div>
                             </div>
                             @if($errors->any())
                                 <div class="alert alert-danger">

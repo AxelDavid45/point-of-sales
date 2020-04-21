@@ -47,14 +47,34 @@ function storeSale(e) {
             console.log(this.response);
         }
         if (this.status === 422) {
-            console.log(JSON.parse(this.response));
+            let response = JSON.parse(this.response);
+            let errors = response.errors;
+
+            if(errors.rfc)  {
+                showRequestsMessages('Escoge un RFC para continuar', 'danger');
+                console.log('rfc error');
+            }
+            if(errors.total) {
+                showRequestsMessages('El total debe ser mayor a 0, debe contener al menos un' +
+                    ' producto', 'danger');
+                console.log('Total error');
+            }
+
         }
     };
     xhr.send(formData);
 }
 
-function showRequestsMessages($message, $level) {
-    
+function showRequestsMessages(message, level) {
+    let html = `
+    <div class="alert alert-${level}">
+        ${message}
+    </div>
+    `;
+    errorSectionForm.innerHTML += html;
+    setTimeout(() => {
+        errorSectionForm.innerHTML = '';
+    }, 3500)
 }
 
 function cartEvents(e) {
