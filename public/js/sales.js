@@ -1,6 +1,7 @@
 const productsTable = document.querySelector('#products-table');
 const cartTable = document.querySelector('#cartTable');
 const createSaleForm = document.querySelector('#createSaleForm');
+const errorSectionForm = document.querySelector('#js-requests-messages');
 
 if (productsTable) {
     productsTable.addEventListener('click', addToCartOneProduct);
@@ -50,6 +51,10 @@ function storeSale(e) {
         }
     };
     xhr.send(formData);
+}
+
+function showRequestsMessages($message, $level) {
+    
 }
 
 function cartEvents(e) {
