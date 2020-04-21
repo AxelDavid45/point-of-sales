@@ -9,6 +9,21 @@ if (productsTable) {
     createSaleForm.addEventListener('submit', storeSale);
 }
 
+
+function verifyFields(fields) {
+    let verificationErrors = [];
+    if (fields[0].length === 0) {
+        verificationErrors.push('Carrito Vacio');
+    }
+    if (fields[1] === '') {
+        verificationErrors.push('Escoge un RFC');
+    }
+    if (fields[2] == 0) {
+        verificationErrors.push('Agrega al menos un producto para poder realizar la venta');
+    }
+    return verificationErrors;
+}
+
 function storeSale(e) {
     e.preventDefault();
     const route = '/sales';
@@ -29,40 +44,49 @@ function storeSale(e) {
         });
     });
 
+    let fields = [productArray, clientRfc, cartTotal];
 
-    // //Create the form data
-    const formData = new FormData();
-    // //Fill the formdata
-    formData.append('rfc', clientRfc);
-    formData.append('products', JSON.stringify(productArray));
-    formData.append('total', cartTotal);
-    formData.append('_token', token);
+    let verification = verifyFields(fields);
 
-    const xhr = new XMLHttpRequest();
-    xhr.open('POST', route, true);
-    xhr.setRequestHeader('X-CSRF-TOKEN', token);
-    xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-    xhr.onload = function () {
-        if (this.status === 200) {
-            console.log(this.response);
-        }
-        if (this.status === 422) {
-            let response = JSON.parse(this.response);
-            let errors = response.errors;
+    if (verification.length === 0) {
+        // //Create the form data
+        const formData = new FormData();
+        // //Fill the formdata
+        formData.append('rfc', clientRfc);
+        formData.append('products', JSON.stringify(productArray));
+        formData.append('total', cartTotal);
+        formData.append('_token', token);
 
-            if(errors.rfc)  {
-                showRequestsMessages('Escoge un RFC para continuar', 'danger');
-                console.log('rfc error');
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', route, true);
+        xhr.setRequestHeader('X-CSRF-TOKEN', token);
+        xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+        xhr.onload = function () {
+            if (this.status === 200) {
+                console.log(this.response);
             }
-            if(errors.total) {
-                showRequestsMessages('El total debe ser mayor a 0, debe contener al menos un' +
-                    ' producto', 'danger');
-                console.log('Total error');
-            }
+            if (this.status === 422) {
+                let response = JSON.parse(this.response);
+                let errors = response.errors;
 
-        }
-    };
-    xhr.send(formData);
+                if (errors.rfc) {
+                    showRequestsMessages('Escoge un RFC para continuar', 'danger');
+                    console.log('rfc error');
+                }
+                if (errors.total) {
+                    showRequestsMessages('El total debe ser mayor a 0, debe contener al menos un' +
+                        ' producto', 'danger');
+                    console.log('Total error');
+                }
+
+            }
+        };
+        xhr.send(formData);
+    } else {
+        verification.forEach((error) => {
+            showRequestsMessages(error, 'danger');
+        } )
+    }
 }
 
 function showRequestsMessages(message, level) {
