@@ -70,16 +70,15 @@ class SaleController extends Controller
         return new Response('Cart was not filled', 500);
     }
 
-    /**
+    /*
      * Display the specified resource.
-     *
-     * @param \App\Sale $sale
-     *
-     * @return \Illuminate\Http\Response
      */
     public function show(Sale $sale)
     {
-        //
+        //Cart information
+        $carts = Cart::where('sale_id', $sale->sale_id)->get();
+
+        return view('sales.single', compact('sale', 'carts'));
     }
 
     /**

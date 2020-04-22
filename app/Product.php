@@ -14,7 +14,7 @@ class Product extends Model
 
     // This model can exists in N carts
     public function carts() {
-        return $this->belongsToMany('App\Cart');
+        return $this->belongsToMany('App\Cart', 'carts', 'sale_id');
     }
 
     public function getGetExtractAttribute() {
