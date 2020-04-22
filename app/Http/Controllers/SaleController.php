@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Cart;
 use App\Client;
 use App\Http\Requests\SaleRequest;
 use App\Product;
 use App\Sale;
 use Illuminate\Http\Request;
 
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 use function GuzzleHttp\Promise\all;
@@ -43,10 +46,31 @@ class SaleController extends Controller
      */
     public function store(SaleRequest $request)
     {
+        $sale = Sale::create(
+            [
+                'total' => $request->input('total'),
+                'rfc'   => $request->input('rfc'),
+                'id'    => $request->input('id')
+            ]
+        );
+        if (isset($sale)) {
+            $productsArray = (array) json_decode($request->input('products'));
+            $completed = [];
 
-        dd($request->all());
+            foreach ($productsArray as $index) {
+                $cart = new Cart();
+                $cart->sale_id = $sale->sale_id;
+                $cart->product_id = $index->id;
+                $cart->amount = $index->amount;
+                $cart->save();
+                $completed[] = $cart;
+            }
 
-
+            if (count($productsArray) === count($completed)) {
+                return new Response('Sale Created', 201);
+            }
+        }
+        return new Response('Cart was not filled', 500);
     }
 
     /**

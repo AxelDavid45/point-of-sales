@@ -9,7 +9,7 @@ class Sale extends Model
     protected $primaryKey = 'sale_id';
 
     protected $fillable = [
-        'total', 'rfc', 'user_id'
+        'total', 'rfc', 'id'
     ];
 
     // This model can exists in N carts

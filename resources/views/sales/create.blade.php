@@ -85,6 +85,7 @@
                             <button
                                 type="submit" class="btn btn-primary">Guardar
                             </button>
+                            <input type="hidden" id="user-id" value="{{ Auth::user()->id }}">
                         </div>
                     </form>
                 </div>

@@ -2,6 +2,7 @@ const productsTable = document.querySelector('#products-table');
 const cartTable = document.querySelector('#cartTable');
 const createSaleForm = document.querySelector('#createSaleForm');
 const errorSectionForm = document.querySelector('#js-requests-messages');
+const userid = document.querySelector('#user-id').value;
 
 if (productsTable) {
     productsTable.addEventListener('click', addToCartOneProduct);
@@ -56,14 +57,16 @@ function storeSale(e) {
         formData.append('products', JSON.stringify(productArray));
         formData.append('total', cartTotal);
         formData.append('_token', token);
+        formData.append('id', userid);
 
         const xhr = new XMLHttpRequest();
         xhr.open('POST', route, true);
         xhr.setRequestHeader('X-CSRF-TOKEN', token);
         xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
         xhr.onload = function () {
-            if (this.status === 200) {
-                console.log(this.response);
+            if (this.status === 201) {
+                showRequestsMessages('Venta creada exitosamente', 'success');
+                createSaleForm.reset();
             }
             if (this.status === 422) {
                 let response = JSON.parse(this.response);
@@ -78,7 +81,10 @@ function storeSale(e) {
                         ' producto', 'danger');
                     console.log('Total error');
                 }
-
+            }
+            if (this.status === 500) {
+                showRequestsMessages('Venta parcialmente creada, anota los productos que el' +
+                    ' cliente compro y comunicate con el equipo de sistemas', 'warning');
             }
         };
         xhr.send(formData);

@@ -6,10 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Cart extends Model
 {
+    protected  $table = 'carts';
     protected $primaryKey = ['sale_id', 'product_id'];
 
+    public $incrementing = false;
+
     protected $fillable = [
-        'sale_id', 'product_id', 'amount'
+        'sale_id', 'product_id','amount'
     ];
 
     //This model can have one or many sales
