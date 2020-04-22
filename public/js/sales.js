@@ -66,7 +66,9 @@ function storeSale(e) {
         xhr.onload = function () {
             if (this.status === 201) {
                 showRequestsMessages('Venta creada exitosamente', 'success');
+                resetCart();
                 createSaleForm.reset();
+
             }
             if (this.status === 422) {
                 let response = JSON.parse(this.response);
@@ -107,6 +109,16 @@ function showRequestsMessages(message, level) {
     }, 3500)
 }
 
+function resetCart() {
+    while(cartTable.childNodes.length > 0) {
+        cartTable.childNodes.forEach((e) => {
+            e.remove();
+        });
+    }
+
+    document.querySelector('#cartTotal').innerText = '0';
+
+}
 function cartEvents(e) {
     e.preventDefault();
     if (e.target.classList[2] === 'delete') {
