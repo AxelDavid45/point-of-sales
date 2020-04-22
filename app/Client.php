@@ -15,7 +15,7 @@ class Client extends Model
 
     // This model can generate 1 or N sales
     public function sales() {
-        return $this->hasMany('App\Sale');
+        return $this->hasMany('App\Sale', 'sale_id');
     }
 
 

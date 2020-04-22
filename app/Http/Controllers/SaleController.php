@@ -22,7 +22,7 @@ class SaleController extends Controller
      */
     public function index()
     {
-        $sales = Sale::latest()->get();
+        $sales = Sale::latest()->paginate();
         return view('sales.index', compact('sales'));
     }
 
@@ -40,9 +40,6 @@ class SaleController extends Controller
 
     /*
      * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
     public function store(SaleRequest $request)
     {

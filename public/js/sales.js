@@ -76,12 +76,10 @@ function storeSale(e) {
 
                 if (errors.rfc) {
                     showRequestsMessages('Escoge un RFC para continuar', 'danger');
-                    console.log('rfc error');
                 }
                 if (errors.total) {
                     showRequestsMessages('El total debe ser mayor a 0, debe contener al menos un' +
                         ' producto', 'danger');
-                    console.log('Total error');
                 }
             }
             if (this.status === 500) {
@@ -229,8 +227,6 @@ function addToCartOneProduct(e) {
 function updateTotal(product, type) {
     let total = document.querySelector('#cartTotal');
     let totalUpdated = 0;
-    console.log(total.innerText);
-    console.log(product.price);
 
     if (type === '-') {
         totalUpdated = parseFloat(product.price) - parseFloat(total.innerText);

@@ -12,6 +12,11 @@ class Sale extends Model
         'total', 'rfc', 'id'
     ];
 
+
+    public function client() {
+        return $this->belongsTo('App\Client', 'rfc');
+    }
+
     // This model can exists in N carts
     public function carts() {
         return $this->belongsToMany('App\Cart');

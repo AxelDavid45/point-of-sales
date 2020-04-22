@@ -26,19 +26,18 @@
                     <div class="col-3">
                         <div class="card">
                             <div class="card-header bg-dark">
-                                    Codigo: {{ $sale->product_id }}
+                                    Vendido A: {{ $sale->client->name }}
                             </div>
                             <div class="card-body">
-                                <h5 class="card-title">{{ $product->name }}</h5>
-
+                                <h4>Total: $<strong>{{ $sale->total }}</strong></h4>
                                 <p class="card-text">
-                                    {{ $product->get_extract }}
+                                    Fecha: {{ date_format($sale->created_at, 'd-M-Y') }}
                                 </p>
                             </div>
                             <div class="card-footer">
                                 <div class="row">
                                     <div class="col-6">
-                                        <form action="{{ route('products.destroy', $product) }}"
+                                        <form action="{{ route('products.destroy', $sale) }}"
                                               method="POST"
                                         >
                                             @csrf
@@ -51,10 +50,9 @@
                                         </form>
                                     </div>
                                     <div class="col-6">
-                                        <a
-                                            class="btn btn-warning"
-                                            href="{{ route('products.edit', $product) }}">
-                                            Editar
+                                        <a href="{{ route('sales.show', $sale) }}" class="btn
+                                        btn-info">
+                                            Detalles
                                         </a>
                                     </div>
                                 </div>
@@ -63,7 +61,7 @@
                     </div>
                 @endforeach
             </div>
-            {{ $products->links() }}
+            {{ $sales->links() }}
         </div><!-- /.container-fluid -->
     </div>
     <!-- /.content -->
