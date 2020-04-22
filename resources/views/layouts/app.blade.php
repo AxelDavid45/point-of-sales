@@ -41,7 +41,7 @@
     <!-- Main Sidebar Container -->
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
         <!-- Brand Logo -->
-        <a href="index3.html" class="brand-link">
+        <a href="/" class="brand-link">
             <span class="brand-text font-weight-light">POS ZM</span>
         </a>
 
@@ -99,10 +99,13 @@
     <footer class="main-footer no-print">
         <!-- To the right -->
         <div class="float-right d-none d-sm-inline">
-            Anything you want
+            Point of sales from scratch
         </div>
         <!-- Default to the left -->
-        <strong>Copyright &copy; 2014-2019 <a href="https://adminlte.io">AdminLTE.io</a>.</strong>
+        <strong>Copyright &copy; {{date('Y')}} <a href="https://twitter.com/E_Axel45">
+                Developed by: Axel Espinosa
+            </a>
+            .</strong>
         All rights reserved.
     </footer>
 </div>
