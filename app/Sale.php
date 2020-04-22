@@ -9,7 +9,7 @@ class Sale extends Model
     protected $primaryKey = 'sale_id';
 
     protected $fillable = [
-        'total', 'rfc', 'id'
+        'total', 'rfc', 'id', 'created'
     ];
 
 

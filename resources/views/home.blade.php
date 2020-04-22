@@ -63,7 +63,7 @@
                                 corte de caja
                             </p>
 
-                            <a href="#" class="btn btn-primary">
+                            <a href="{{ route('reports.sales') }}" class="btn btn-primary">
                                 <i class="fas fa-file-excel"></i>
                                 Generar corte de caja
                             </a>

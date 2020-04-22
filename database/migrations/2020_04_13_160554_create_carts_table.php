@@ -18,8 +18,9 @@ class CreateCartsTable extends Migration
             $table->unsignedBigInteger('product_id');
             $table->unsignedInteger('amount');
             $table->primary(['sale_id', 'product_id']);
-            $table->foreign('sale_id')->references('sale_id')->on('sales');
-            $table->foreign('product_id')->references('product_id')->on('products');
+            $table->foreign('sale_id')->references('sale_id')->on('sales')
+                ->onDelete('cascade');
+            $table->foreign('product_id')->references('product_id')->on('products')->onDelete('cascade');
             $table->timestamps();
             $table->engine = 'InnoDB';
             $table->charset = 'utf8mb4';

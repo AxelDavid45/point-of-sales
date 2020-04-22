@@ -8,12 +8,9 @@ use App\Http\Requests\SaleRequest;
 use App\Product;
 use App\Sale;
 use Illuminate\Http\Request;
-
+use App\Exports\SalesExport;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
-
-use function GuzzleHttp\Promise\all;
 
 class SaleController extends Controller
 {
@@ -47,7 +44,8 @@ class SaleController extends Controller
             [
                 'total' => $request->input('total'),
                 'rfc'   => $request->input('rfc'),
-                'id'    => $request->input('id')
+                'id'    => $request->input('id'),
+                'created' => date('Y-m-d')
             ]
         );
         if (isset($sale)) {
@@ -106,6 +104,12 @@ class SaleController extends Controller
         //
     }
 
+    public function export() {
+
+//        $sales = Sale::where('created_at', '=', $sale->created_at)->get();
+        return Excel::download(new SalesExport(), 'sales.xlsx');
+    }
+
     /**
      * Remove the specified resource from storage.
      *
@@ -115,6 +119,7 @@ class SaleController extends Controller
      */
     public function destroy(Sale $sale)
     {
-        //
+        $sale->delete();
+        return back()->with('deleted', true);
     }
 }

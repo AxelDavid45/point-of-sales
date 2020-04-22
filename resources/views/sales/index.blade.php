@@ -13,6 +13,12 @@
                         </a>
                     </h1>
                 </div><!-- /.col -->
+                @if(isset($_SESSION['deleted']))
+                    <div class="alert alert-success">
+                        Eliminada correctamente
+                    </div>
+                @endif
+
             </div><!-- /.row -->
         </div><!-- /.container-fluid -->
     </div>
@@ -37,7 +43,7 @@
                             <div class="card-footer">
                                 <div class="row">
                                     <div class="col-6">
-                                        <form action="{{ route('products.destroy', $sale) }}"
+                                        <form action="{{ route('sales.destroy', $sale) }}"
                                               method="POST"
                                         >
                                             @csrf

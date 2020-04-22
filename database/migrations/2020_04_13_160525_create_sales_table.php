@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 class CreateSalesTable extends Migration
@@ -19,6 +20,7 @@ class CreateSalesTable extends Migration
             $table->string('rfc');
             $table->unsignedBigInteger('id');
             $table->timestamps();
+            $table->date('created')->nullable();
             $table->foreign('id')->references('id')->on('users');
             $table->foreign('rfc')->references('rfc')->on('clients');
             $table->engine = 'InnoDB';
