@@ -85,6 +85,14 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a href="{{ route('reports.sales') }}" class="nav-link">
+                            <i class="nav-icon fa fa-file-excel"></i>
+                            <p>
+                                Generar corte de caja
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a href="{{ route('register') }}" class="nav-link">
                             <i class="nav-icon fa fa-user"></i>
                             <p>

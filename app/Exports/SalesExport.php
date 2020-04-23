@@ -3,7 +3,6 @@
 namespace App\Exports;
 
 use Maatwebsite\Excel\Concerns\WithMapping;
-use Maatwebsite\Excel\Row;
 use App\{Sale, Cart};
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
@@ -35,7 +34,6 @@ class SalesExport implements FromCollection, WithHeadings, WithMapping
     //Map the data inside the file
     public function map($sale): array
     {
-
         //Create the primary rows with the sale information
         $rows = [
             [

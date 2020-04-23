@@ -86,7 +86,12 @@ class SaleController extends Controller
      * */
     public function export()
     {
-        return Excel::download(new SalesExport(), 'sales.xlsx');
+        if (Sale::all()->count() > 0) {
+            return Excel::download(new SalesExport(), 'sales.xlsx');
+        }
+        return back();
+
+
     }
 
     /*
