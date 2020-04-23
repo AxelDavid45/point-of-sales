@@ -37408,7 +37408,302 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 /*! no static exports found */
 /***/ (function(module, exports) {
 
+var productsTable = document.querySelector('#products-table');
+var cartTable = document.querySelector('#cartTable');
+var createSaleForm = document.querySelector('#createSaleForm');
+var errorSectionForm = document.querySelector('#js-requests-messages');
+var userid = document.querySelector('#user-id').value;
 
+if (productsTable) {
+  productsTable.addEventListener('click', addToCartOneProduct);
+  cartTable.addEventListener('click', cartEvents);
+  createSaleForm.addEventListener('submit', storeSale);
+}
+/*
+* Verify the fields in the form
+* fields contains
+* index 0 --- products list
+* index 1 --- rfc field
+* index 2 --- total amount
+*
+* returns and array
+* */
+
+
+function verifyFields(fields) {
+  var verificationErrors = [];
+
+  if (fields[0].length === 0) {
+    verificationErrors.push('Carrito Vacio');
+  }
+
+  if (fields[1] === '') {
+    verificationErrors.push('Escoge un RFC');
+  }
+
+  if (fields[2] == 0) {
+    verificationErrors.push('Agrega al menos un producto para poder realizar la venta');
+  }
+
+  return verificationErrors;
+}
+/*
+* Store the sale and send a AJAX request to store the data
+* */
+
+
+function storeSale(e) {
+  e.preventDefault();
+  var route = '/sales'; // Get all the fields and values
+
+  var products = document.querySelectorAll('.product');
+  var clientRfc = document.querySelector('#rfc').value;
+  var productArray = [];
+  var token = document.getElementsByName('_token')[0].value;
+  var cartTotal = document.querySelector('#cartTotal').innerText; //Fill the product array with every product data
+
+  products.forEach(function (product, index) {
+    var productId = product.children[0].innerText;
+    var productAmount = product.children[2].children[0].children[1].innerText;
+    productArray.push({
+      'id': productId,
+      'amount': productAmount
+    });
+  }); //Create a fields variable to passes the data to verifyFields method
+
+  var fields = [productArray, clientRfc, cartTotal]; //Save the array with all the errors found
+
+  var verification = verifyFields(fields);
+
+  if (verification.length === 0) {
+    // //Create the form data
+    var formData = new FormData(); //Fill the formdata
+
+    formData.append('rfc', clientRfc);
+    formData.append('products', JSON.stringify(productArray));
+    formData.append('total', cartTotal);
+    formData.append('_token', token);
+    formData.append('id', userid); //Create the AJAX request
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', route, true); //Header with the CSRF protection
+
+    xhr.setRequestHeader('X-CSRF-TOKEN', token); //Header specifying AJAX request
+
+    xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+
+    xhr.onload = function () {
+      //Created
+      if (this.status === 201) {
+        showRequestsMessages('Venta creada exitosamente', 'success');
+        resetCart();
+        createSaleForm.reset();
+      } //Backend verification errors
+
+
+      if (this.status === 422) {
+        var response = JSON.parse(this.response);
+        var errors = response.errors;
+
+        if (errors.rfc) {
+          showRequestsMessages('Escoge un RFC para continuar', 'danger');
+        }
+
+        if (errors.total) {
+          showRequestsMessages('El total debe ser mayor a 0, debe contener al menos un' + ' producto', 'danger');
+        }
+      } //Server errors
+
+
+      if (this.status === 500) {
+        showRequestsMessages('Venta parcialmente creada, anota los productos que el' + ' cliente compro y comunicate con el equipo de sistemas', 'warning');
+      }
+    }; //Send the information
+
+
+    xhr.send(formData);
+  } else {
+    //Map the errors in the client
+    verification.forEach(function (error) {
+      showRequestsMessages(error, 'danger');
+    });
+  }
+}
+/*
+* Map all the messages in the client
+* Message needed
+* Level ---- bootstrap alert class color
+* */
+
+
+function showRequestsMessages(message, level) {
+  var html = "\n    <div class=\"alert alert-".concat(level, "\">\n        ").concat(message, "\n    </div>\n    ");
+  errorSectionForm.innerHTML += html;
+  setTimeout(function () {
+    errorSectionForm.innerHTML = '';
+  }, 3500);
+}
+/*
+* Deletes all the elements in the cart table
+* */
+
+
+function resetCart() {
+  while (cartTable.childNodes.length > 0) {
+    cartTable.childNodes.forEach(function (e) {
+      e.remove();
+    });
+  }
+
+  document.querySelector('#cartTotal').innerText = '0';
+}
+/*
+* Subtract one by one the amount of product or
+* add one by one the amount of product
+* */
+
+
+function modifyAmountOfProduct(e, modifier) {
+  e.preventDefault(); //Get the current amount of product
+
+  var amountOfProductNumeric = parseFloat(e.target.parentElement.childNodes[3].innerText); //Get the element with the amount of product
+
+  var amountOfProductElement = e.target.parentElement.childNodes[3]; //Get the price of the product
+
+  var productPrice = parseFloat(e.target.dataset.price); // Create a object for update the total
+
+  var productObject = {
+    'id': e.target.dataset.id,
+    'name': e.target.dataset.name,
+    'left': e.target.dataset.left,
+    'price': productPrice
+  }; //The default value for every product added to the cart
+
+  var finalAmount = 1; //Verify which modifier is and update the total using the product information
+
+  if (modifier === '+') {
+    finalAmount = amountOfProductNumeric + 1;
+    updateTotal(productObject, '+');
+  }
+
+  if (modifier === '-') {
+    finalAmount = amountOfProductNumeric - 1;
+    updateTotal(productObject, '-');
+  }
+
+  if (finalAmount === 0) {
+    e.target.parentElement.parentElement.parentElement.remove();
+    fillTableProducts(productObject);
+  }
+
+  amountOfProductElement.innerText = finalAmount;
+}
+/*
+* Add the product selected in table products to the cart, update the total and
+* delete it from products table
+* */
+
+
+function addToCartOneProduct(e) {
+  e.preventDefault();
+  var btnAdd = e.target;
+
+  if (btnAdd.classList[0] === 'btn') {
+    //Create an object to handle the creation later
+    var product = {
+      'id': btnAdd.dataset.id,
+      'name': btnAdd.dataset.name,
+      'left': btnAdd.dataset.left,
+      'price': btnAdd.dataset.price
+    };
+    updateTotal(product, '+'); //Get the whole row of a product
+
+    var productRow = btnAdd.parentElement.parentElement; //Append the new product to the cart table
+
+    cartTable.innerHTML += "\n        <tr class=\"product\">\n            <td class=\"productId\">".concat(product.id, "</td>\n            <td>").concat(product.name, "</td>\n            <td class=\"productControls\">\n                <p>\n                <button\n                         data-name=\"").concat(product.name, "\"\n                         data-id=\"").concat(product.id, "\"\n                         data-price=\"").concat(product.price, "\"\n                         data-left=\"").concat(product.left, "\"\n                class=\"sum btn btn-sm btn-primary\">+</button>\n                <span class=\"productAmount text-bold\">1</span>\n                <button\n                         data-name=\"").concat(product.name, "\"\n                         data-id=\"").concat(product.id, "\"\n                         data-price=\"").concat(product.price, "\"\n                         data-left=\"").concat(product.left, "\"\n                class=\"subs btn btn-sm btn-warning\">-</button>\n                </p>\n            </td>\n            <td>\n                 <button class=\"btn btn-danger\">\n                    <i class=\"fas fa-trash-alt delete\"\n                         data-name=\"").concat(product.name, "\"\n                         data-id=\"").concat(product.id, "\"\n                         data-price=\"").concat(product.price, "\"\n                         data-left=\"").concat(product.left, "\"\n                    ></i>\n                 </button>\n             </td>\n        </tr>\n        "); //Remove the product selected in the table products
+
+    productRow.remove();
+  }
+}
+/*
+* Update the cart total depends on the modifier
+* */
+
+
+function updateTotal(product, modifier) {
+  //Get the total element
+  var total = document.querySelector('#cartTotal'); //Default value for total
+
+  var totalUpdated = 0; //Verify which modifier is and update the total
+
+  if (modifier === '-') {
+    totalUpdated = parseFloat(product.price) - parseFloat(total.innerText);
+  }
+
+  if (modifier === '+') {
+    totalUpdated = parseFloat(product.price) + parseFloat(total.innerText);
+  } //Make amounts positive
+
+
+  if (totalUpdated < 0) {
+    totalUpdated *= -1;
+  }
+
+  total.innerText = totalUpdated;
+}
+/*
+* Removes the product of cart table and added again to products table
+* */
+
+
+function deleteProductCart(e) {
+  e.preventDefault();
+  var btnDelete = e.target; //Create the product object
+
+  var product = {
+    'id': btnDelete.dataset.id,
+    'name': btnDelete.dataset.name,
+    'left': btnDelete.dataset.left,
+    'price': btnDelete.dataset.price
+  };
+  updateTotal(product, '-'); //Get the whole row of a product
+
+  var productRow = btnDelete.parentElement.parentElement.parentElement; //Add the product again to the table products
+
+  fillTableProducts(product);
+  productRow.remove();
+}
+/*
+* Handles the creation of a new row in the products table
+* Receives the product
+* */
+
+
+function fillTableProducts(product) {
+  //Create the row
+  var row = "\n        <tr>\n            <td>".concat(product.id, "</td>\n            <td>").concat(product.name, "</td>\n            <td>").concat(product.left, "</td>\n            <td>\n               <button class=\"btn btn-success btn-sm\"\n                       data-name=\"").concat(product.name, "\"\n                       data-price=\"").concat(product.price, "\"\n                       data-id=\"").concat(product.id, "\"\n                       data-left=\"").concat(product.left, "\"\n               >\n                  <i class=\"fas fa-plus\"></i>\n                  Agregar\n               </button>\n            </td>\n        </tr>");
+  productsTable.innerHTML += row;
+}
+/*
+* Handles the events, subtraction, addition, delete
+* */
+
+
+function cartEvents(e) {
+  e.preventDefault();
+
+  if (e.target.classList[2] === 'delete') {
+    deleteProductCart(e);
+  }
+
+  if (e.target.classList[0] === 'sum') {
+    modifyAmountOfProduct(e, '+');
+  }
+
+  if (e.target.classList[0] === 'subs') {
+    modifyAmountOfProduct(e, '-');
+  }
+}
 
 /***/ }),
 

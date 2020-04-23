@@ -150,7 +150,5 @@
     </div><!-- /.container-fluid -->
     </div>
     <!-- /.content -->
-
-    <script src="{{ asset('js/sales.js') }}"></script>
 @endsection
 
