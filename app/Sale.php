@@ -6,11 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Sale extends Model
 {
+    protected $table = 'sales';
+
     protected $primaryKey = 'sale_id';
+
+    public $incrementing = true;
 
     protected $fillable = [
         'total', 'rfc', 'id', 'created'
     ];
+
 
 
     public function client() {
@@ -19,6 +24,9 @@ class Sale extends Model
 
     // This model can exists in N carts
     public function carts() {
-        return $this->belongsToMany('App\Cart');
+        return $this->belongsToMany('App\Cart', 'sales', 'sale_id',
+                                    'sale_id', 'sale_id', 'sale_id')
+            ;
     }
+
 }

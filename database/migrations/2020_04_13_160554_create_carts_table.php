@@ -22,6 +22,7 @@ class CreateCartsTable extends Migration
                 ->onDelete('cascade');
             $table->foreign('product_id')->references('product_id')->on('products')->onDelete('cascade');
             $table->timestamps();
+            $table->date('created')->nullable();
             $table->engine = 'InnoDB';
             $table->charset = 'utf8mb4';
             $table->collation = 'utf8mb4_general_ci';

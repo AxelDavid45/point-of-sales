@@ -13,12 +13,12 @@ class Cart extends Model
     public $incrementing = false;
 
     protected $fillable = [
-        'sale_id', 'product_id','amount'
+        'sale_id', 'product_id','amount', 'created'
     ];
 
     //This model can have one or many sales
     public function sales() {
-        return $this->hasMany('App\Sale', 'sale_id');
+        return $this->hasMany('App\Sale', 'sale_id', 'sale_id');
     }
 
     //This model can have one or many products

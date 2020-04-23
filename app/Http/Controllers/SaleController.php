@@ -57,6 +57,7 @@ class SaleController extends Controller
                 $cart->sale_id = $sale->sale_id;
                 $cart->product_id = $index->id;
                 $cart->amount = $index->amount;
+                $cart->created = date('Y-m-d');
                 $cart->save();
                 $completed[] = $cart;
             }
@@ -104,9 +105,19 @@ class SaleController extends Controller
         //
     }
 
-    public function export() {
-
-//        $sales = Sale::where('created_at', '=', $sale->created_at)->get();
+    public function export()
+    {
+//        $lastSale = Sale::select('created')->latest()->first();
+//        $carts = Cart::where('created', $lastSale->created)
+//            ->with('sales')
+//            ->with('products')
+//            ->get();
+//
+//        foreach ($sales as $sale) {
+//            foreach ($sale->carts as $cart) {
+//                dd($cart->products);
+//            }
+//        }
         return Excel::download(new SalesExport(), 'sales.xlsx');
     }
 
