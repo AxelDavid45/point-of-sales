@@ -48,6 +48,7 @@ class SaleController extends Controller
                 'created' => date('Y-m-d')
             ]
         );
+
         if (isset($sale)) {
             $productsArray = (array) json_decode($request->input('products'));
             $completed = [];
@@ -80,57 +81,24 @@ class SaleController extends Controller
         return view('sales.single', compact('sale', 'carts'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param \App\Sale $sale
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Sale $sale)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Sale                $sale
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Sale $sale)
-    {
-        //
-    }
-
+    /*
+     * Returns a response with the file provided by SalesExport
+     * */
     public function export()
     {
-//        $lastSale = Sale::select('created')->latest()->first();
-//        $carts = Cart::where('created', $lastSale->created)
-//            ->with('sales')
-//            ->with('products')
-//            ->get();
-//
-//        foreach ($sales as $sale) {
-//            foreach ($sale->carts as $cart) {
-//                dd($cart->products);
-//            }
-//        }
         return Excel::download(new SalesExport(), 'sales.xlsx');
     }
 
-    /**
+    /*
      * Remove the specified resource from storage.
-     *
-     * @param \App\Sale $sale
-     *
-     * @return \Illuminate\Http\Response
      */
     public function destroy(Sale $sale)
     {
-        $sale->delete();
+        try {
+            $sale->delete();
+        } catch (\Exception $e) {
+            return back()->with('error', 'Error al eliminar');
+        }
         return back()->with('deleted', true);
     }
 }

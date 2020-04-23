@@ -12,30 +12,31 @@ class SalesExport implements FromCollection, WithHeadings, WithMapping
 {
     public function headings(): array
     {
+        //Add the first row with the headers
         return [
-            [
             '# VENTA',
             'CLIENTE',
             'TOTAL',
             'FECHA',
-            ]
+
         ];
     }
 
-    /*
-    * @return \Illuminate\Support\Collection
-    */
+    // Retrieve the data and passes them to map method
     public function collection()
     {
+        //Retrive the last sale of the day
         $lastSale = Sale::latest()->first();
-
+        // Retrieve the information with the cart relation inside
         return Sale::with('carts')->where('created', $lastSale->created)
             ->get();
     }
 
+    //Map the data inside the file
     public function map($sale): array
     {
 
+        //Create the primary rows with the sale information
         $rows = [
             [
                 $sale->sale_id,
@@ -53,6 +54,7 @@ class SalesExport implements FromCollection, WithHeadings, WithMapping
             ]
         ];
 
+        // Go through the carts and retrieve the product information
         foreach ($sale->carts as $cart) {
             foreach ($cart->products as $product) {
                 $rows[] = [
@@ -63,6 +65,7 @@ class SalesExport implements FromCollection, WithHeadings, WithMapping
             }
         }
 
+        // Add a blank space
         $rows[] = [
             '',
             '',
@@ -70,6 +73,7 @@ class SalesExport implements FromCollection, WithHeadings, WithMapping
             ''
         ];
 
+        //Add new headers
         $rows[] = [
             '# VENTA',
             'CLIENTE',
@@ -77,6 +81,7 @@ class SalesExport implements FromCollection, WithHeadings, WithMapping
             'FECHA',
         ];
 
+        //Return the data
         return $rows;
     }
 }

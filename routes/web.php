@@ -20,7 +20,12 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resource('products', 'ProductController')->middleware('auth');
+
 Route::resource('clients', 'ClientController')->middleware('auth');
-Route::resource('sales', 'SaleController')->middleware('auth');
+
+Route::resource('sales', 'SaleController')
+    ->except(['update', 'edit'])
+    ->middleware('auth');
+
 Route::get('/reports/sales', 'SaleController@export')->name('reports.sales')
     ->middleware('auth');
