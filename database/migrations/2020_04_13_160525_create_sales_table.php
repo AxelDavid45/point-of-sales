@@ -21,7 +21,7 @@ class CreateSalesTable extends Migration
             $table->unsignedBigInteger('id');
             $table->timestamps();
             $table->date('created')->nullable();
-            $table->foreign('id')->references('id')->on('users');
+            $table->foreign('id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('rfc')->references('rfc')->on('clients');
             $table->engine = 'InnoDB';
             $table->charset = 'utf8mb4';

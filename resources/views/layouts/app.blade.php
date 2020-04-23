@@ -84,6 +84,22 @@
                             </p>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a href="{{ route('register') }}" class="nav-link">
+                            <i class="nav-icon fa fa-user"></i>
+                            <p>
+                                Nuevo usuario
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('users.index') }}" class="nav-link">
+                            <i class="nav-icon fa fa-group"></i>
+                            <p>
+                                Todos los usuarios
+                            </p>
+                        </a>
+                    </li>
                 </ul>
             </nav>
             <!-- /.sidebar-menu -->
@@ -110,7 +126,8 @@
     </footer>
 </div>
 
-<script src="{{ asset('js/app.js') }}"></script>
 <script src="https://kit.fontawesome.com/4bc87b4ae7.js" crossorigin="anonymous"></script>
+<script src="{{ asset('js/app.js') }}"></script>
+
 </body>
 </html>

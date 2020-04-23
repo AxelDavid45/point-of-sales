@@ -17,6 +17,9 @@ Route::get('/', 'Auth\LoginController@showLoginForm');
 
 Auth::routes();
 
+Route::get('users', 'UserController@index')->name('users.index');
+Route::delete('users/{user}', 'UserController@destroy')->name('users.destroy');
+
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resource('products', 'ProductController')->middleware('auth');
