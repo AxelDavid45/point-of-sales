@@ -2,12 +2,16 @@
 
 namespace App\Exports;
 
+use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 use Maatwebsite\Excel\Concerns\WithMapping;
+use PhpOffice\PhpSpreadsheet\Style\Color;
+use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
+use PhpOffice\PhpSpreadsheet\Worksheet\Column;
 use App\{Sale, Cart};
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 
-class SalesExport implements FromCollection, WithHeadings, WithMapping
+class SalesExport implements FromCollection, WithHeadings, WithMapping, WithColumnFormatting
 {
     public function headings(): array
     {
@@ -43,9 +47,11 @@ class SalesExport implements FromCollection, WithHeadings, WithMapping
                 $sale->created
             ],
             [
+                '',
                 'DESGLOSE'
             ],
             [
+                '',
                 'PRODUCTO',
                 'PRECIO',
                 'CANTIDAD'
@@ -56,6 +62,7 @@ class SalesExport implements FromCollection, WithHeadings, WithMapping
         foreach ($sale->carts as $cart) {
             foreach ($cart->products as $product) {
                 $rows[] = [
+                    '',
                     $product->name,
                     $product->price,
                     $cart->amount
@@ -82,4 +89,13 @@ class SalesExport implements FromCollection, WithHeadings, WithMapping
         //Return the data
         return $rows;
     }
+
+    public function columnFormats(): array
+    {
+        return [
+            'C' => NumberFormat::FORMAT_ACCOUNTING_USD
+        ];
+    }
+
+
 }
