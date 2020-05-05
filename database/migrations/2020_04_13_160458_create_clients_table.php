@@ -22,8 +22,8 @@ class CreateClientsTable extends Migration
             $table->timestamps();
             $table->primary('rfc');
             $table->engine = 'InnoDB';
-            $table->charset = 'utf8mb4';
-            $table->collation = 'utf8mb4_general_ci';
+            $table->charset = 'utf8';
+            $table->collation = 'utf8_general_ci';
         });
     }
 
