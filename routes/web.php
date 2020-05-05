@@ -29,7 +29,10 @@ Route::resource('clients', 'ClientController')->middleware('auth');
 Route::resource('sales', 'SaleController')
     ->except(['update', 'edit'])
     ->middleware('auth');
-Route::resource('categories', 'CategoryController')->middleware('auth');
+
+Route::resource('categories', 'CategoryController')
+    ->except(['update', 'edit', 'show'])
+    ->middleware('auth');
 
 Route::get('/reports/sales', 'SaleController@export')->name('reports.sales')
     ->middleware('auth');

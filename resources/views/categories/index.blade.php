@@ -14,6 +14,13 @@
                     </h1>
                 </div><!-- /.col -->
             </div><!-- /.row -->
+            @if(isset($_SESSION['deleted']))
+                <div class="row">
+                    <div class="alert alert-success">
+                        Eliminada correctamente
+                    </div>
+                </div>
+            @endif
         </div><!-- /.container-fluid -->
     </div>
     <!-- /.content-header -->

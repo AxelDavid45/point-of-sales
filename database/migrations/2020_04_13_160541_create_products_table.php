@@ -21,7 +21,8 @@ class CreateProductsTable extends Migration
             $table->unsignedFloat('price');
             $table->unsignedFloat('cost')->nullable();
             $table->unsignedBigInteger('category_id');
-            $table->foreign('category_id')->references('category_id')->on('categories');
+            $table->foreign('category_id')->references('category_id')
+                ->on('categories')->onDelete('cascade');
             $table->timestamps();
             $table->engine = 'InnoDB';
             $table->charset = 'utf8mb4';
