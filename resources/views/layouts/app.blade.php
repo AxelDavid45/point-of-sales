@@ -69,6 +69,14 @@
                     </li>
 
                     <li class="nav-item">
+                        <a href="{{ route('categories.index') }}" class="nav-link">
+                            <i class="fa fa-tag nav-icon"></i>
+                            <p>
+                                Categorias
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a href="{{ route('products.index') }}" class="nav-link">
                             <i class="fa fa-boxes nav-icon"></i>
                             <p>
