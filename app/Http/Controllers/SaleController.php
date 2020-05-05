@@ -7,7 +7,6 @@ use App\Client;
 use App\Http\Requests\SaleRequest;
 use App\Product;
 use App\Sale;
-use Illuminate\Http\Request;
 use App\Exports\SalesExport;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Response;
@@ -30,7 +29,6 @@ class SaleController extends Controller
      */
     public function create()
     {
-
         //Get the clients information
         $clients = Client::orderBy('rfc', 'DESC')->get();
         //Get the products information

@@ -4,14 +4,18 @@ namespace App\Exports;
 
 use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 use Maatwebsite\Excel\Concerns\WithMapping;
+use Maatwebsite\Excel\Sheet;
+use PhpOffice\PhpSpreadsheet\Exception;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Style\Color;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
-use PhpOffice\PhpSpreadsheet\Worksheet\Column;
-use App\{Sale, Cart};
+use App\Sale;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 
-class SalesExport implements FromCollection, WithHeadings, WithMapping, WithColumnFormatting
+class SalesExport implements FromCollection, WithHeadings,
+                                                 WithMapping,
+                                                 WithColumnFormatting
 {
     public function headings(): array
     {
