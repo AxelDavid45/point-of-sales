@@ -24,8 +24,8 @@ class CreateSalesTable extends Migration
             $table->foreign('id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('rfc')->references('rfc')->on('clients');
             $table->engine = 'InnoDB';
-            $table->charset = 'utf8';
-            $table->collation = 'utf8_general_ci';
+            $table->charset = 'utf8mb4';
+            $table->collation = 'utf8mb4_general_ci';
         });
     }
 
