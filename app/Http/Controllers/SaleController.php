@@ -52,7 +52,7 @@ class SaleController extends Controller
         if (isset($sale)) {
             $productsArray = (array) json_decode($request->input('products'));
             $completed = [];
-
+            //Get the products sales
             foreach ($productsArray as $index) {
                 $cart = new Cart();
                 $cart->sale_id = $sale->sale_id;
@@ -64,7 +64,7 @@ class SaleController extends Controller
             }
 
             if (count($productsArray) === count($completed)) {
-                return new Response('Sale Created', 201);
+                return new Response($completed, 201);
             }
         }
         return new Response('Cart was not filled', 500);

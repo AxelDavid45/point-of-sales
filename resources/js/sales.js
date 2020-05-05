@@ -52,9 +52,11 @@ function storeSale(e) {
     //Fill the product array with every product data
     products.forEach((product, index) => {
         let productId = product.children[0].innerText;
+        let productName = product.children[1].innerText;
         let productAmount = product.children[2].children[0].children[1].innerText;
         productArray.push({
             'id': productId,
+            'name': productName,
             'amount': productAmount
         });
     });
@@ -88,6 +90,7 @@ function storeSale(e) {
                 showRequestsMessages('Venta creada exitosamente', 'success');
                 resetCart();
                 createSaleForm.reset();
+                location.reload();
             }
             //Backend verification errors
             if (this.status === 422) {

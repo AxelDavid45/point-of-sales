@@ -14,6 +14,9 @@
                         </a>
                     </h1>
                 </div><!-- /.col -->
+                <div class="offset-4 col-2 text-center">
+                    <h5>Vendido: <strong class="fa-2x">$8000</strong></h5>
+                </div>
             </div><!-- /.row -->
             @if(session('created'))
                 <div class="row">
@@ -116,8 +119,7 @@
                     <tr>
                         <th>Código</th>
                         <th>Nombre</th>
-                        <th>Existencia</th>
-                        <th colspan="2">Acciones</th>
+                        <th>Acciones</th>
                     </tr>
                     </thead>
                     <tbody id="products-table">
@@ -125,7 +127,6 @@
                         <tr>
                             <td>{{ $product->product_id }}</td>
                             <td>{{ $product->name }}</td>
-                            <td>{{ $product->product_left }}</td>
                             <td>
                                 <button class="btn btn-success btn-sm"
                                         data-name="{{ $product->name }}"

@@ -37464,9 +37464,11 @@ function storeSale(e) {
 
   products.forEach(function (product, index) {
     var productId = product.children[0].innerText;
+    var productName = product.children[1].innerText;
     var productAmount = product.children[2].children[0].children[1].innerText;
     productArray.push({
       'id': productId,
+      'name': productName,
       'amount': productAmount
     });
   }); //Create a fields variable to passes the data to verifyFields method
@@ -37498,6 +37500,7 @@ function storeSale(e) {
         showRequestsMessages('Venta creada exitosamente', 'success');
         resetCart();
         createSaleForm.reset();
+        location.reload();
       } //Backend verification errors
 
 
