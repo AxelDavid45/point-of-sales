@@ -30,9 +30,24 @@ class SaleController extends Controller
      */
     public function create()
     {
+
+        //Get the clients information
         $clients = Client::orderBy('rfc', 'DESC')->get();
+        //Get the products information
         $products = Product::orderBy('name', 'DESC')->get();
-        return view('sales.create', compact('clients', 'products'));
+        //Total of sales today
+        $totalSalesPerDay = 0;
+        $salesToday = Sale::select('total')->where('created', date('Y-m-d'))
+            ->get();
+
+        foreach ($salesToday as $sale) {
+            $totalSalesPerDay += $sale->total;
+        }
+
+        return view(
+            'sales.create',
+            compact('clients', 'products', 'totalSalesPerDay')
+        );
     }
 
     /*
@@ -42,15 +57,15 @@ class SaleController extends Controller
     {
         $sale = Sale::create(
             [
-                'total' => $request->input('total'),
-                'rfc'   => $request->input('rfc'),
-                'id'    => $request->input('id'),
+                'total'   => $request->input('total'),
+                'rfc'     => $request->input('rfc'),
+                'id'      => $request->input('id'),
                 'created' => date('Y-m-d')
             ]
         );
 
         if (isset($sale)) {
-            $productsArray = (array) json_decode($request->input('products'));
+            $productsArray = (array)json_decode($request->input('products'));
             $completed = [];
             //Get the products sales
             foreach ($productsArray as $index) {
@@ -90,8 +105,6 @@ class SaleController extends Controller
             return Excel::download(new SalesExport(), 'sales.xlsx');
         }
         return back();
-
-
     }
 
     /*

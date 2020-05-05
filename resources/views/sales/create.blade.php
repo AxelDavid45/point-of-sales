@@ -15,7 +15,7 @@
                     </h1>
                 </div><!-- /.col -->
                 <div class="offset-4 col-2 text-center">
-                    <h5>Vendido: <strong class="fa-2x">$8000</strong></h5>
+                    <h5>Vendido: <strong class="fa-2x">${{ $totalSalesPerDay }}</strong></h5>
                 </div>
             </div><!-- /.row -->
             @if(session('created'))
