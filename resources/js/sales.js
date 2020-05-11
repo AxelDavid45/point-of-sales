@@ -316,7 +316,6 @@ function fillTableProducts(product) {
         <tr>
             <td>${product.id}</td>
             <td>${product.name}</td>
-            <td>${product.left}</td>
             <td>
                <button class="btn btn-success btn-sm"
                        data-name="${product.name}"
