@@ -41,7 +41,7 @@
         <div class="container-fluid">
             <div class="row">
                 @foreach($clients as $client)
-                    <div class="col-3">
+                    <div class="col-sm-12 col-md-3">
                         <div class="card">
                             <div class="card-header bg-dark">
                                 RFC: {{ $client->rfc }}

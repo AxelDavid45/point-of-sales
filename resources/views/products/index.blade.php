@@ -24,7 +24,7 @@
             {{ $products->links() }}
             <div class="row">
                 @foreach($products as $product)
-                    <div class="col-3">
+                    <div class="col-sm-12 col-md-3">
                         <div class="card">
                             <div class="card-header bg-dark">
                                 Codigo: {{ $product->product_id }}

@@ -31,7 +31,7 @@
             {{ $categories->links() }}
             <div class="row">
                 @foreach($categories as $category)
-                    <div class="col-3">
+                    <div class="col-sm-12 col-md-3">
                         <div class="card">
                             <div class="card-header bg-dark">
                                 Codigo: {{ $category->category_id }}
