@@ -21,7 +21,7 @@
     class="hold-transition login-page">
 <div class="login-box">
     <div class="login-logo">
-        <img style="width: 100%" src="{{ asset('storage/logotipo.png') }}" alt="">
+        <img style="width: 100%" src="https://kandmaster.com/logotipo.png" alt="">
     </div>
     <!-- /.login-logo -->
     <div class="card">
