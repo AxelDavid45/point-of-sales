@@ -12,7 +12,34 @@ if (productsTable) {
 }
 
 function retrieveInformationStorage(e) {
-    console.log('hola');
+    //Get the spinner div
+    let spinner = document.querySelector('.loading-spinner');
+
+    //Verify if exists data in the localStorage
+    if (localStorage.getItem('products') !== null) {
+        //Get the information from localStorage
+        let total = localStorage.getItem('total');
+        let productsStorage = JSON.parse(localStorage.getItem('products'));
+
+        setTimeout(() => {
+            //Fill the cart with the products from localStorage
+            productsStorage.forEach(product => {
+                appendProductToCart(product);
+            });
+
+            //Set the total in html
+            document.querySelector("#cartTotal").innerHTML = total;
+        }, 1100);
+
+
+    }
+
+    setTimeout(() => {
+        spinner.classList.add('d-none');
+    }, 1800);
+
+
+
 }
 
 
@@ -123,7 +150,7 @@ function storeSale(e) {
         //Map the errors in the client
         verification.forEach((error) => {
             showRequestsMessages(error, 'danger');
-        } )
+        })
     }
 }
 
@@ -148,7 +175,7 @@ function showRequestsMessages(message, level) {
 * Deletes all the elements in the cart table
 * */
 function resetCart() {
-    while(cartTable.childNodes.length > 0) {
+    while (cartTable.childNodes.length > 0) {
         cartTable.childNodes.forEach((e) => {
             e.remove();
         });
@@ -230,13 +257,26 @@ function addToCartOneProduct(e) {
             'price': btnAdd.dataset.price
         };
 
+        //Update the total
         updateTotal(product, '+');
+
+        //Add the html to the cart with all the information
+        appendProductToCart(product);
+
+        //Add the product to local Storage
+        addProductToLocalStorage(product);
 
         //Get the whole row of a product
         let productRow = btnAdd.parentElement.parentElement;
+        //Remove the product selected in the table products
+        productRow.remove();
+    }
+}
 
-        //Append the new product to the cart table
-        cartTable.innerHTML += `
+function appendProductToCart(product) {
+
+    //Append the new product to the cart table
+    cartTable.innerHTML += `
         <tr class="product">
             <td class="productId">${product.id}</td>
             <td>${product.name}</td>
@@ -270,14 +310,7 @@ function addToCartOneProduct(e) {
         </tr>
         `;
 
-        //Add the product to local Storage
-        addProductToLocalStorage(product);
-
-        //Remove the product selected in the table products
-        productRow.remove();
-    }
 }
-
 /**
  * Add a product object in the local storage key products.Besides verify if an element already exists
  * and update the amount.
@@ -299,8 +332,8 @@ function addProductToLocalStorage(product) {
         productsStorage.forEach((content, index) => {
             //If exists update the amount
             if (productsStorage[index].id === product.id) {
-               productsStorage[index].amount = product.amount;
-               productExists = true;
+                productsStorage[index].amount = product.amount;
+                productExists = true;
             }
         });
 
