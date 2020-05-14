@@ -200,7 +200,6 @@ function modifyAmountOfProduct(e, modifier) {
         amountOfProductElement.innerText = finalAmount;
         //Update the amount of product in the object
         productObject.amount = finalAmount;
-        console.log(productObject);
         //Update the amount of product in the localStorage
         addProductToLocalStorage(productObject);
     }
@@ -336,6 +335,8 @@ function updateTotal(product, modifier) {
 
     //Update total amount in the html
     total.innerText = totalUpdated;
+    //Update the total in the localstorage
+    localStorage.setItem('total', totalUpdated.toString());
 
 }
 
