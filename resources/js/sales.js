@@ -428,6 +428,15 @@ function deleteProductCart(e) {
 * Receives the product
 * */
 function fillTableProducts(product) {
+    let TableRows = productsTable.children;
+    let arrayRows = [];
+
+    for(i = 0; i >= TableRows.length; i++) {
+        arrayRows.push(TableRows[i]);
+    }
+
+    console.log(arrayRows);
+
     //Create the row
     let row = `
         <tr>

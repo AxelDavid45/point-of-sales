@@ -130,7 +130,7 @@
                     </thead>
                     <tbody id="products-table">
                     @foreach($products as $product)
-                        <tr>
+                        <tr data-id="{{ $product->product_id}}">
                             <td>{{ $product->product_id }}</td>
                             <td>{{ $product->name }}</td>
                             <td>

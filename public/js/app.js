@@ -37789,7 +37789,15 @@ function deleteProductCart(e) {
 
 
 function fillTableProducts(product) {
-  //Create the row
+  var TableRows = productsTable.children;
+  var arrayRows = [];
+
+  for (i = 0; i >= TableRows.length; i++) {
+    arrayRows.push(TableRows[i]);
+  }
+
+  console.log(arrayRows); //Create the row
+
   var row = "\n        <tr>\n            <td>".concat(product.id, "</td>\n            <td>").concat(product.name, "</td>\n            <td>\n               <button class=\"btn btn-success btn-sm\"\n                       data-name=\"").concat(product.name, "\"\n                       data-amount=\"1\"\n                       data-price=\"").concat(product.price, "\"\n                       data-id=\"").concat(product.id, "\"\n               >\n                  <i class=\"fas fa-plus\"></i>\n                  Agregar\n               </button>\n            </td>\n        </tr>");
   productsTable.innerHTML += row;
 }
