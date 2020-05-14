@@ -37638,15 +37638,21 @@ function addToCartOneProduct(e) {
     productRow.remove();
   }
 }
+/**
+ * Add a product object in the local storage key products.Besides verify if an element already exists
+ * and update the amount.
+ */
+
 
 function addProductToLocalStorage(product) {
+  //Create the initial structure of the JSON
   var productsJson = []; //Verify if exists products in localStorage
 
   if (localStorage.getItem('products') === null) {
-    productsJson.push(product);
+    //Add the first product
+    productsJson.push(product); //Add the JSON to localStorage
+
     localStorage.setItem('products', JSON.stringify(productsJson));
-    console.log('localstorage vacio, creando uno nuevo...');
-    console.log(productsJson);
   } else {
     //Get all the products in the localStorage
     var productsStorage = JSON.parse(localStorage.getItem('products'));
@@ -37662,15 +37668,10 @@ function addProductToLocalStorage(product) {
 
     if (!productExists) {
       //Add the new product to the JSON of products
-      productsStorage.push(product);
-      console.log('producto agregado al json');
-      console.log(productsStorage); //Update the products value in local storage
+      productsStorage.push(product); //Update the products value in local storage
 
       localStorage.setItem('products', JSON.stringify(productsStorage));
     }
-
-    console.log('localstorage products');
-    console.log(productsStorage);
   }
 }
 /*
