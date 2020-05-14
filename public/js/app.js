@@ -37768,10 +37768,14 @@ function deleteProductCart(e) {
 
   var product = {
     'id': btnDelete.dataset.id,
+    'amount': btnDelete.dataset.amount,
     'name': btnDelete.dataset.name,
     'price': btnDelete.dataset.price
-  };
-  updateTotal(product, '-'); //Get the whole row of a product
+  }; //Update the total
+
+  updateTotal(product, '-'); //Remove the product from local Storage
+
+  removeProductLocalStorage(product); //Get the whole row of a product
 
   var productRow = btnDelete.parentElement.parentElement.parentElement; //Add the product again to the table products
 

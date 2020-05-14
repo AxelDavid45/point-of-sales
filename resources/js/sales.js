@@ -407,11 +407,14 @@ function deleteProductCart(e) {
     //Create the product object
     let product = {
         'id': btnDelete.dataset.id,
+        'amount': btnDelete.dataset.amount,
         'name': btnDelete.dataset.name,
         'price': btnDelete.dataset.price
     };
-
+    //Update the total
     updateTotal(product, '-');
+    //Remove the product from local Storage
+    removeProductLocalStorage(product);
 
     //Get the whole row of a product
     let productRow = btnDelete.parentElement.parentElement.parentElement;
