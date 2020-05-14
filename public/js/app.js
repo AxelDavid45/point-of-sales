@@ -37664,7 +37664,8 @@ function addToCartOneProduct(e) {
 
     productRow.remove();
   }
-}
+} //Print the html in the cart table
+
 
 function appendProductToCart(product) {
   //Append the new product to the cart table

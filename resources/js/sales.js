@@ -273,6 +273,7 @@ function addToCartOneProduct(e) {
     }
 }
 
+//Print the html in the cart table
 function appendProductToCart(product) {
 
     //Append the new product to the cart table
@@ -309,8 +310,9 @@ function appendProductToCart(product) {
              </td>
         </tr>
         `;
-
 }
+
+
 /**
  * Add a product object in the local storage key products.Besides verify if an element already exists
  * and update the amount.
