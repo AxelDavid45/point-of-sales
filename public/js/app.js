@@ -37425,7 +37425,7 @@ function retrieveInformationStorage(e) {
   //Get the spinner div
   var spinner = document.querySelector('.loading-spinner'); //Verify if exists data in the localStorage
 
-  if (localStorage.getItem('products') !== null) {
+  if (localStorage.getItem('products') !== null && JSON.parse(localStorage.getItem('products')).length > 0) {
     //Get the information from localStorage
     var total = localStorage.getItem('total');
     var productsStorage = JSON.parse(localStorage.getItem('products'));
@@ -37623,7 +37623,9 @@ function modifyAmountOfProduct(e, modifier) {
 
   if (finalAmount === 0) {
     //Remove the element in the cart table
-    e.target.parentElement.parentElement.parentElement.remove(); //Add the element to products table
+    e.target.parentElement.parentElement.parentElement.remove(); //Remove the element from localStorage
+
+    removeProductLocalStorage(productObject); //Add the element to products table
 
     fillTableProducts(productObject);
   } else {
@@ -37633,6 +37635,22 @@ function modifyAmountOfProduct(e, modifier) {
     productObject.amount = finalAmount; //Update the amount of product in the localStorage
 
     addProductToLocalStorage(productObject);
+  }
+}
+
+function removeProductLocalStorage(product) {
+  if (localStorage.getItem('products') !== null) {
+    //Get all the products in the localStorage
+    var productsStorage = JSON.parse(localStorage.getItem('products')); //Verify if the product already exists
+
+    productsStorage.forEach(function (content, index) {
+      //If exists delete the element
+      if (productsStorage[index].id === product.id) {
+        console.log(productsStorage.splice(index, index + 1));
+      }
+    }); //Update the data from localstorage
+
+    localStorage.setItem('products', JSON.stringify(productsStorage));
   }
 }
 /*
