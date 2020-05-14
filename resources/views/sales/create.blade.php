@@ -29,9 +29,14 @@
                 </div>
             @endif
         </div><!-- /.container-fluid -->
+
     </div>
     <!-- /.content-header -->
 
+    <div class="loading-spinner">
+            <div class="lds-dual-ring"></div>
+            <p>Cargando...</p>
+        </div>
     <!-- Main content -->
     <div class="content">
         <div class="container-fluid">

@@ -5,9 +5,14 @@ const errorSectionForm = document.querySelector('#js-requests-messages');
 const userid = document.querySelector('#user-id').value;
 
 if (productsTable) {
+    document.addEventListener('DOMContentLoaded', retrieveInformationStorage);
     productsTable.addEventListener('click', addToCartOneProduct);
     cartTable.addEventListener('click', cartEvents);
     createSaleForm.addEventListener('submit', storeSale);
+}
+
+function retrieveInformationStorage(e) {
+    console.log('hola');
 }
 
 
