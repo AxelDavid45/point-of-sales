@@ -37607,6 +37607,9 @@ function modifyAmountOfProduct(e, modifier) {
     amountOfProductElement.innerText = finalAmount; //Update the amount of product in the object
 
     productObject.amount = finalAmount;
+    console.log(productObject); //Update the amount of product in the localStorage
+
+    addProductToLocalStorage(productObject);
   }
 }
 /*
@@ -37660,7 +37663,7 @@ function addProductToLocalStorage(product) {
 
     productsStorage.forEach(function (content, index) {
       //If exists update the amount
-      if (productsStorage[index].id == product.id) {
+      if (productsStorage[index].id === product.id) {
         productsStorage[index].amount = product.amount;
         productExists = true;
       }
@@ -37670,6 +37673,9 @@ function addProductToLocalStorage(product) {
       //Add the new product to the JSON of products
       productsStorage.push(product); //Update the products value in local storage
 
+      localStorage.setItem('products', JSON.stringify(productsStorage));
+    } else {
+      //Update the product data in localstorage
       localStorage.setItem('products', JSON.stringify(productsStorage));
     }
   }
