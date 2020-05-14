@@ -209,7 +209,6 @@ function addToCartOneProduct(e) {
         let product = {
             'id': btnAdd.dataset.id,
             'name': btnAdd.dataset.name,
-            'left': btnAdd.dataset.left,
             'price': btnAdd.dataset.price
         };
 
@@ -229,14 +228,12 @@ function addToCartOneProduct(e) {
                          data-name="${product.name}"
                          data-id="${product.id}"
                          data-price="${product.price}"
-                         data-left="${product.left}"
                 class="sum btn btn-sm btn-primary">+</button>
                 <span class="productAmount text-bold">1</span>
                 <button
                          data-name="${product.name}"
                          data-id="${product.id}"
                          data-price="${product.price}"
-                         data-left="${product.left}"
                 class="subs btn btn-sm btn-warning">-</button>
                 </p>
             </td>
@@ -246,7 +243,6 @@ function addToCartOneProduct(e) {
                          data-name="${product.name}"
                          data-id="${product.id}"
                          data-price="${product.price}"
-                         data-left="${product.left}"
                     ></i>
                  </button>
              </td>
