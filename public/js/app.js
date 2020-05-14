@@ -37458,7 +37458,7 @@ function storeSale(e) {
 
   var products = document.querySelectorAll('.product');
   var clientRfc = document.querySelector('#rfc').value;
-  var productArray = [];
+  var productsArray = [];
   var token = document.getElementsByName('_token')[0].value;
   var cartTotal = document.querySelector('#cartTotal').innerText; //Fill the product array with every product data
 
@@ -37466,7 +37466,7 @@ function storeSale(e) {
     var productId = product.children[0].innerText;
     var productName = product.children[1].innerText;
     var productAmount = product.children[2].children[0].children[1].innerText;
-    productArray.push({
+    productsArray.push({
       'id': productId,
       'name': productName,
       'amount': productAmount
@@ -37482,7 +37482,7 @@ function storeSale(e) {
     var formData = new FormData(); //Fill the formdata
 
     formData.append('rfc', clientRfc);
-    formData.append('products', JSON.stringify(productArray));
+    formData.append('products', JSON.stringify(productsArray));
     formData.append('total', cartTotal);
     formData.append('_token', token);
     formData.append('id', userid); //Create the AJAX request
@@ -37577,29 +37577,37 @@ function modifyAmountOfProduct(e, modifier) {
 
   var productObject = {
     'id': e.target.dataset.id,
+    'amount': amountOfProductNumeric,
     'name': e.target.dataset.name,
-    'left': e.target.dataset.left,
     'price': productPrice
   }; //The default value for every product added to the cart
 
   var finalAmount = 1; //Verify which modifier is and update the total using the product information
 
   if (modifier === '+') {
-    finalAmount = amountOfProductNumeric + 1;
+    finalAmount = amountOfProductNumeric + 1; //Update the total
+
     updateTotal(productObject, '+');
   }
 
   if (modifier === '-') {
-    finalAmount = amountOfProductNumeric - 1;
+    finalAmount = amountOfProductNumeric - 1; //Update the total
+
     updateTotal(productObject, '-');
-  }
+  } //If the amount is 0 remove the item and add it to the products table again
+
 
   if (finalAmount === 0) {
-    e.target.parentElement.parentElement.parentElement.remove();
-    fillTableProducts(productObject);
-  }
+    //Remove the element in the cart table
+    e.target.parentElement.parentElement.parentElement.remove(); //Add the element to products table
 
-  amountOfProductElement.innerText = finalAmount;
+    fillTableProducts(productObject);
+  } else {
+    //Update the amount in the html
+    amountOfProductElement.innerText = finalAmount; //Update the amount of product in the object
+
+    productObject.amount = finalAmount;
+  }
 }
 /*
 * Add the product selected in table products to the cart, update the total and
@@ -37615,6 +37623,7 @@ function addToCartOneProduct(e) {
     //Create an object to handle the creation later
     var product = {
       'id': btnAdd.dataset.id,
+      'amount': 1,
       'name': btnAdd.dataset.name,
       'price': btnAdd.dataset.price
     };
@@ -37622,7 +37631,9 @@ function addToCartOneProduct(e) {
 
     var productRow = btnAdd.parentElement.parentElement; //Append the new product to the cart table
 
-    cartTable.innerHTML += "\n        <tr class=\"product\">\n            <td class=\"productId\">".concat(product.id, "</td>\n            <td>").concat(product.name, "</td>\n            <td class=\"productControls\">\n                <p>\n                <button\n                         data-name=\"").concat(product.name, "\"\n                         data-id=\"").concat(product.id, "\"\n                         data-price=\"").concat(product.price, "\"\n                class=\"sum btn btn-sm btn-primary\">+</button>\n                <span class=\"productAmount text-bold\">1</span>\n                <button\n                         data-name=\"").concat(product.name, "\"\n                         data-id=\"").concat(product.id, "\"\n                         data-price=\"").concat(product.price, "\"\n                class=\"subs btn btn-sm btn-warning\">-</button>\n                </p>\n            </td>\n            <td>\n                 <button class=\"btn btn-danger\">\n                    <i class=\"fas fa-trash-alt delete\"\n                         data-name=\"").concat(product.name, "\"\n                         data-id=\"").concat(product.id, "\"\n                         data-price=\"").concat(product.price, "\"\n                    ></i>\n                 </button>\n             </td>\n        </tr>\n        "); //Remove the product selected in the table products
+    cartTable.innerHTML += "\n        <tr class=\"product\">\n            <td class=\"productId\">".concat(product.id, "</td>\n            <td>").concat(product.name, "</td>\n            <td class=\"productControls\">\n                <p>\n                <button\n                         data-name=\"").concat(product.name, "\"\n                         data-id=\"").concat(product.id, "\"\n                         data-price=\"").concat(product.price, "\"\n                class=\"sum btn btn-sm btn-primary\">+</button>\n                <span class=\"productAmount text-bold\">1</span>\n                <button\n                         data-name=\"").concat(product.name, "\"\n                         data-id=\"").concat(product.id, "\"\n                         data-price=\"").concat(product.price, "\"\n                class=\"subs btn btn-sm btn-warning\">-</button>\n                </p>\n            </td>\n            <td>\n                 <button class=\"btn btn-danger\">\n                    <i class=\"fas fa-trash-alt delete\"\n                         data-name=\"").concat(product.name, "\"\n                         data-id=\"").concat(product.id, "\"\n                         data-price=\"").concat(product.price, "\"\n                    ></i>\n                 </button>\n             </td>\n        </tr>\n        "); //Add the product to local Storage
+
+    addProductToLocalStorage(product); //Remove the product selected in the table products
 
     productRow.remove();
   }

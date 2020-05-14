@@ -45,7 +45,7 @@ function storeSale(e) {
     // Get all the fields and values
     let products = document.querySelectorAll('.product');
     let clientRfc = document.querySelector('#rfc').value;
-    let productArray = [];
+    let productsArray = [];
     let token = document.getElementsByName('_token')[0].value;
     let cartTotal = document.querySelector('#cartTotal').innerText;
 
@@ -54,7 +54,7 @@ function storeSale(e) {
         let productId = product.children[0].innerText;
         let productName = product.children[1].innerText;
         let productAmount = product.children[2].children[0].children[1].innerText;
-        productArray.push({
+        productsArray.push({
             'id': productId,
             'name': productName,
             'amount': productAmount
@@ -71,7 +71,7 @@ function storeSale(e) {
         const formData = new FormData();
         //Fill the formdata
         formData.append('rfc', clientRfc);
-        formData.append('products', JSON.stringify(productArray));
+        formData.append('products', JSON.stringify(productsArray));
         formData.append('total', cartTotal);
         formData.append('_token', token);
         formData.append('id', userid);
@@ -168,8 +168,8 @@ function modifyAmountOfProduct(e, modifier) {
     // Create a object for update the total
     let productObject = {
         'id': e.target.dataset.id,
+        'amount': amountOfProductNumeric,
         'name': e.target.dataset.name,
-        'left': e.target.dataset.left,
         'price': productPrice
     };
 
@@ -179,19 +179,29 @@ function modifyAmountOfProduct(e, modifier) {
     //Verify which modifier is and update the total using the product information
     if (modifier === '+') {
         finalAmount = amountOfProductNumeric + 1;
+        //Update the total
         updateTotal(productObject, '+');
     }
 
     if (modifier === '-') {
         finalAmount = amountOfProductNumeric - 1;
+        //Update the total
         updateTotal(productObject, '-');
     }
 
+    //If the amount is 0 remove the item and add it to the products table again
     if (finalAmount === 0) {
+        //Remove the element in the cart table
         e.target.parentElement.parentElement.parentElement.remove();
+        //Add the element to products table
         fillTableProducts(productObject);
+    } else {
+        //Update the amount in the html
+        amountOfProductElement.innerText = finalAmount;
+        //Update the amount of product in the object
+        productObject.amount = finalAmount;
     }
-    amountOfProductElement.innerText = finalAmount;
+
 }
 
 
@@ -208,6 +218,7 @@ function addToCartOneProduct(e) {
         //Create an object to handle the creation later
         let product = {
             'id': btnAdd.dataset.id,
+            'amount': 1,
             'name': btnAdd.dataset.name,
             'price': btnAdd.dataset.price
         };
@@ -248,11 +259,14 @@ function addToCartOneProduct(e) {
              </td>
         </tr>
         `;
+
+        //Add the product to local Storage
+        addProductToLocalStorage(product);
+
         //Remove the product selected in the table products
         productRow.remove();
     }
 }
-
 
 /*
 * Update the cart total depends on the modifier
