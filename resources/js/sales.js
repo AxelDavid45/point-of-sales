@@ -237,12 +237,14 @@ function addToCartOneProduct(e) {
                 <p>
                 <button
                          data-name="${product.name}"
+                         data-amount="${product.amount}"
                          data-id="${product.id}"
                          data-price="${product.price}"
                 class="sum btn btn-sm btn-primary">+</button>
                 <span class="productAmount text-bold">1</span>
                 <button
                          data-name="${product.name}"
+                         data-amount="${product.amount}"
                          data-id="${product.id}"
                          data-price="${product.price}"
                 class="subs btn btn-sm btn-warning">-</button>
@@ -252,6 +254,7 @@ function addToCartOneProduct(e) {
                  <button class="btn btn-danger">
                     <i class="fas fa-trash-alt delete"
                          data-name="${product.name}"
+                         data-amount="${product.amount}"
                          data-id="${product.id}"
                          data-price="${product.price}"
                     ></i>
@@ -265,6 +268,43 @@ function addToCartOneProduct(e) {
 
         //Remove the product selected in the table products
         productRow.remove();
+    }
+}
+
+function addProductToLocalStorage(product) {
+    let productsJson = [];
+    //Verify if exists products in localStorage
+    if (localStorage.getItem('products') === null) {
+        productsJson.push(product);
+        localStorage.setItem('products', JSON.stringify(productsJson));
+        console.log('localstorage vacio, creando uno nuevo...');
+        console.log(productsJson);
+    } else {
+        //Get all the products in the localStorage
+        let productsStorage = JSON.parse(localStorage.getItem('products'));
+        let productExists = false;
+        //Verify if the product already exists and updated
+        productsStorage.forEach((content, index) => {
+            //If exists update the amount
+            if (productsStorage[index].id == product.id) {
+               productsStorage[index].amount = product.amount;
+               productExists = true;
+            }
+        });
+
+        //If the product does not exists in the local storage
+        if (!productExists) {
+            //Add the new product to the JSON of products
+            productsStorage.push(product);
+            console.log('producto agregado al json');
+            console.log(productsStorage);
+            //Update the products value in local storage
+            localStorage.setItem('products', JSON.stringify(productsStorage));
+        }
+
+        console.log('localstorage products');
+        console.log(productsStorage);
+
     }
 }
 
@@ -289,6 +329,7 @@ function updateTotal(product, modifier) {
         totalUpdated *= -1;
     }
 
+    //Update total amount in the html
     total.innerText = totalUpdated;
 
 }
@@ -303,7 +344,6 @@ function deleteProductCart(e) {
     let product = {
         'id': btnDelete.dataset.id,
         'name': btnDelete.dataset.name,
-        'left': btnDelete.dataset.left,
         'price': btnDelete.dataset.price
     };
 
@@ -329,9 +369,9 @@ function fillTableProducts(product) {
             <td>
                <button class="btn btn-success btn-sm"
                        data-name="${product.name}"
+                       data-amount="1"
                        data-price="${product.price}"
                        data-id="${product.id}"
-                       data-left="${product.left}"
                >
                   <i class="fas fa-plus"></i>
                   Agregar

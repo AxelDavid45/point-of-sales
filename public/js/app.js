@@ -37631,11 +37631,46 @@ function addToCartOneProduct(e) {
 
     var productRow = btnAdd.parentElement.parentElement; //Append the new product to the cart table
 
-    cartTable.innerHTML += "\n        <tr class=\"product\">\n            <td class=\"productId\">".concat(product.id, "</td>\n            <td>").concat(product.name, "</td>\n            <td class=\"productControls\">\n                <p>\n                <button\n                         data-name=\"").concat(product.name, "\"\n                         data-id=\"").concat(product.id, "\"\n                         data-price=\"").concat(product.price, "\"\n                class=\"sum btn btn-sm btn-primary\">+</button>\n                <span class=\"productAmount text-bold\">1</span>\n                <button\n                         data-name=\"").concat(product.name, "\"\n                         data-id=\"").concat(product.id, "\"\n                         data-price=\"").concat(product.price, "\"\n                class=\"subs btn btn-sm btn-warning\">-</button>\n                </p>\n            </td>\n            <td>\n                 <button class=\"btn btn-danger\">\n                    <i class=\"fas fa-trash-alt delete\"\n                         data-name=\"").concat(product.name, "\"\n                         data-id=\"").concat(product.id, "\"\n                         data-price=\"").concat(product.price, "\"\n                    ></i>\n                 </button>\n             </td>\n        </tr>\n        "); //Add the product to local Storage
+    cartTable.innerHTML += "\n        <tr class=\"product\">\n            <td class=\"productId\">".concat(product.id, "</td>\n            <td>").concat(product.name, "</td>\n            <td class=\"productControls\">\n                <p>\n                <button\n                         data-name=\"").concat(product.name, "\"\n                         data-amount=\"").concat(product.amount, "\"\n                         data-id=\"").concat(product.id, "\"\n                         data-price=\"").concat(product.price, "\"\n                class=\"sum btn btn-sm btn-primary\">+</button>\n                <span class=\"productAmount text-bold\">1</span>\n                <button\n                         data-name=\"").concat(product.name, "\"\n                         data-amount=\"").concat(product.amount, "\"\n                         data-id=\"").concat(product.id, "\"\n                         data-price=\"").concat(product.price, "\"\n                class=\"subs btn btn-sm btn-warning\">-</button>\n                </p>\n            </td>\n            <td>\n                 <button class=\"btn btn-danger\">\n                    <i class=\"fas fa-trash-alt delete\"\n                         data-name=\"").concat(product.name, "\"\n                         data-amount=\"").concat(product.amount, "\"\n                         data-id=\"").concat(product.id, "\"\n                         data-price=\"").concat(product.price, "\"\n                    ></i>\n                 </button>\n             </td>\n        </tr>\n        "); //Add the product to local Storage
 
     addProductToLocalStorage(product); //Remove the product selected in the table products
 
     productRow.remove();
+  }
+}
+
+function addProductToLocalStorage(product) {
+  var productsJson = []; //Verify if exists products in localStorage
+
+  if (localStorage.getItem('products') === null) {
+    productsJson.push(product);
+    localStorage.setItem('products', JSON.stringify(productsJson));
+    console.log('localstorage vacio, creando uno nuevo...');
+    console.log(productsJson);
+  } else {
+    //Get all the products in the localStorage
+    var productsStorage = JSON.parse(localStorage.getItem('products'));
+    var productExists = false; //Verify if the product already exists and updated
+
+    productsStorage.forEach(function (content, index) {
+      //If exists update the amount
+      if (productsStorage[index].id == product.id) {
+        productsStorage[index].amount = product.amount;
+        productExists = true;
+      }
+    }); //If the product does not exists in the local storage
+
+    if (!productExists) {
+      //Add the new product to the JSON of products
+      productsStorage.push(product);
+      console.log('producto agregado al json');
+      console.log(productsStorage); //Update the products value in local storage
+
+      localStorage.setItem('products', JSON.stringify(productsStorage));
+    }
+
+    console.log('localstorage products');
+    console.log(productsStorage);
   }
 }
 /*
@@ -37660,7 +37695,8 @@ function updateTotal(product, modifier) {
 
   if (totalUpdated < 0) {
     totalUpdated *= -1;
-  }
+  } //Update total amount in the html
+
 
   total.innerText = totalUpdated;
 }
@@ -37676,7 +37712,6 @@ function deleteProductCart(e) {
   var product = {
     'id': btnDelete.dataset.id,
     'name': btnDelete.dataset.name,
-    'left': btnDelete.dataset.left,
     'price': btnDelete.dataset.price
   };
   updateTotal(product, '-'); //Get the whole row of a product
@@ -37694,7 +37729,7 @@ function deleteProductCart(e) {
 
 function fillTableProducts(product) {
   //Create the row
-  var row = "\n        <tr>\n            <td>".concat(product.id, "</td>\n            <td>").concat(product.name, "</td>\n            <td>\n               <button class=\"btn btn-success btn-sm\"\n                       data-name=\"").concat(product.name, "\"\n                       data-price=\"").concat(product.price, "\"\n                       data-id=\"").concat(product.id, "\"\n                       data-left=\"").concat(product.left, "\"\n               >\n                  <i class=\"fas fa-plus\"></i>\n                  Agregar\n               </button>\n            </td>\n        </tr>");
+  var row = "\n        <tr>\n            <td>".concat(product.id, "</td>\n            <td>").concat(product.name, "</td>\n            <td>\n               <button class=\"btn btn-success btn-sm\"\n                       data-name=\"").concat(product.name, "\"\n                       data-amount=\"1\"\n                       data-price=\"").concat(product.price, "\"\n                       data-id=\"").concat(product.id, "\"\n               >\n                  <i class=\"fas fa-plus\"></i>\n                  Agregar\n               </button>\n            </td>\n        </tr>");
   productsTable.innerHTML += row;
 }
 /*

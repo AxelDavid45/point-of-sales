@@ -133,7 +133,7 @@
                                         data-name="{{ $product->name }}"
                                         data-price="{{ $product->price }}"
                                         data-id="{{ $product->product_id }}"
-                                        data-left="{{ $product->product_left }}"
+                                        data-amount="1"
                                 >
                                     <i class="fas fa-plus"></i>
                                     Agregar
