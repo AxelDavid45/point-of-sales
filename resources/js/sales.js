@@ -11,6 +11,7 @@ if (productsTable) {
     createSaleForm.addEventListener('submit', storeSale);
 }
 
+//Bring back the information available in the localstorage
 function retrieveInformationStorage(e) {
     //Get the spinner div
     let spinner = document.querySelector('.loading-spinner');
@@ -36,7 +37,7 @@ function retrieveInformationStorage(e) {
 
     setTimeout(() => {
         spinner.classList.add('d-none');
-    }, 1800);
+    }, 1500);
 
 
 }
@@ -93,7 +94,7 @@ function storeSale(e) {
     });
 
     //Create a fields variable to passes the data to verifyFields method
-    let fields = [productArray, clientRfc, cartTotal];
+    let fields = [productsArray, clientRfc, cartTotal];
     //Save the array with all the errors found
     let verification = verifyFields(fields);
 
@@ -122,6 +123,7 @@ function storeSale(e) {
                 resetCart();
                 createSaleForm.reset();
                 location.reload();
+                resetLocalStorage();
             }
             //Backend verification errors
             if (this.status === 422) {
@@ -471,6 +473,13 @@ function fillTableProducts(product) {
             </td>
         </tr>`;
         productsTable.innerHTML += row;
+    }
+}
+
+//Clear the localStorage
+function resetLocalStorage() {
+    if (localStorage.getItem('products') !== null) {
+        localStorage.clear();
     }
 }
 

@@ -37419,7 +37419,8 @@ if (productsTable) {
   productsTable.addEventListener('click', addToCartOneProduct);
   cartTable.addEventListener('click', cartEvents);
   createSaleForm.addEventListener('submit', storeSale);
-}
+} //Bring back the information available in the localstorage
+
 
 function retrieveInformationStorage(e) {
   //Get the spinner div
@@ -37441,7 +37442,7 @@ function retrieveInformationStorage(e) {
 
   setTimeout(function () {
     spinner.classList.add('d-none');
-  }, 1800);
+  }, 1500);
 }
 /*
 * Verify the fields in the form
@@ -37497,7 +37498,7 @@ function storeSale(e) {
     });
   }); //Create a fields variable to passes the data to verifyFields method
 
-  var fields = [productArray, clientRfc, cartTotal]; //Save the array with all the errors found
+  var fields = [productsArray, clientRfc, cartTotal]; //Save the array with all the errors found
 
   var verification = verifyFields(fields);
 
@@ -37525,6 +37526,7 @@ function storeSale(e) {
         resetCart();
         createSaleForm.reset();
         location.reload();
+        resetLocalStorage();
       } //Backend verification errors
 
 
@@ -37817,6 +37819,13 @@ function fillTableProducts(product) {
     //Create the row
     var row = "\n        <tr>\n            <td>".concat(product.id, "</td>\n            <td>").concat(product.name, "</td>\n            <td>\n               <button class=\"btn btn-success btn-sm\"\n                       data-name=\"").concat(product.name, "\"\n                       data-amount=\"1\"\n                       data-price=\"").concat(product.price, "\"\n                       data-id=\"").concat(product.id, "\"\n               >\n                  <i class=\"fas fa-plus\"></i>\n                  Agregar\n               </button>\n            </td>\n        </tr>");
     productsTable.innerHTML += row;
+  }
+} //Clear the localStorage
+
+
+function resetLocalStorage() {
+  if (localStorage.getItem('products') !== null) {
+    localStorage.clear();
   }
 }
 /*
