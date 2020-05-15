@@ -37740,11 +37740,11 @@ function updateTotal(product, modifier) {
   var totalUpdated = 0; //Verify which modifier is and update the total
 
   if (modifier === '-') {
-    totalUpdated = parseFloat(product.price) - parseFloat(total.innerText);
+    totalUpdated = parseFloat(total.innerText.toString()) - parseFloat(product.price);
   }
 
   if (modifier === '+') {
-    totalUpdated = parseFloat(product.price) + parseFloat(total.innerText);
+    totalUpdated = parseFloat(product.price) + parseFloat(total.innerText.toString());
   } //Make amounts positive
 
 
@@ -37764,13 +37764,15 @@ function updateTotal(product, modifier) {
 
 function deleteProductCart(e) {
   e.preventDefault();
-  var btnDelete = e.target; //Create the product object
+  var btnDelete = e.target; //Current amount of product
+
+  var amountOfProductNumeric = e.target.parentElement.parentElement.parentElement.children[2].children[0].children[1].innerText; //Create the product object
 
   var product = {
     'id': btnDelete.dataset.id,
     'amount': btnDelete.dataset.amount,
     'name': btnDelete.dataset.name,
-    'price': btnDelete.dataset.price
+    'price': parseFloat(btnDelete.dataset.price) * amountOfProductNumeric
   }; //Update the total
 
   updateTotal(product, '-'); //Remove the product from local Storage
