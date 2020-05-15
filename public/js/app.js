@@ -37775,13 +37775,13 @@ function deleteProductCart(e) {
     'price': parseFloat(btnDelete.dataset.price) * amountOfProductNumeric
   }; //Update the total
 
-  updateTotal(product, '-'); //Remove the product from local Storage
-
-  removeProductLocalStorage(product); //Get the whole row of a product
+  updateTotal(product, '-'); //Get the whole row of a product
 
   var productRow = btnDelete.parentElement.parentElement.parentElement; //Add the product again to the table products
 
-  fillTableProducts(product);
+  fillTableProducts(product); //Remove the product from local Storage
+
+  removeProductLocalStorage(product);
   productRow.remove();
 }
 /*
@@ -37791,16 +37791,25 @@ function deleteProductCart(e) {
 
 
 function fillTableProducts(product) {
-  var exists = false; //Perform this verification if there are products in the local storage
+  var exists = false; //Elements in the table
+
+  var NodeRows = productsTable.childNodes; //Perform this verification if there are products in the local storage
 
   if (localStorage.getItem('products') !== null && JSON.parse(localStorage.getItem('products')).length > 0) {
-    var NodeRows = productsTable.childNodes; //Verify if the element already exists in the table
+    if (NodeRows.length > 3) {
+      console.log('entre'); //Verify if the element already exists in the table
 
-    NodeRows.forEach(function (node, index) {
-      if (index % 2 != 0 && node.dataset.id === product.id) {
-        exists = true;
-      }
-    });
+      NodeRows.forEach(function (node, index) {
+        console.log(index % 2);
+        console.log(node);
+
+        if (index % 2 !== 0) {
+          if (node.dataset.id === product.id) {
+            exists = true;
+          }
+        }
+      });
+    }
   } //If does not exists create the row
 
 
