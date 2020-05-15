@@ -306,7 +306,7 @@ function appendProductToCart(product) {
                          data-id="${product.id}"
                          data-price="${product.price}"
                 class="sum btn btn-sm btn-primary">+</button>
-                <span class="productAmount text-bold">1</span>
+                <span class="productAmount text-bold">${product.amount}</span>
                 <button
                          data-name="${product.name}"
                          data-amount="${product.amount}"
