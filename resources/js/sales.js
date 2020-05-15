@@ -249,7 +249,7 @@ function removeProductLocalStorage(product) {
         productsStorage.forEach((content, index) => {
             //If exists delete the element
             if (productsStorage[index].id === product.id) {
-                console.log(productsStorage.splice(index, index + 1));
+                productsStorage.splice(index, index + 1);
             }
         });
 
@@ -438,11 +438,8 @@ function fillTableProducts(product) {
         && JSON.parse(localStorage.getItem('products')).length > 0
     ) {
         if (NodeRows.length > 3) {
-            console.log('entre')
             //Verify if the element already exists in the table
             NodeRows.forEach((node, index) => {
-                console.log(index % 2);
-                console.log(node);
                 if (index % 2 !== 0) {
                     if (node.dataset.id === product.id) {
                         exists = true;

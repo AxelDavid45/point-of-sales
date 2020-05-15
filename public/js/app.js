@@ -37648,7 +37648,7 @@ function removeProductLocalStorage(product) {
     productsStorage.forEach(function (content, index) {
       //If exists delete the element
       if (productsStorage[index].id === product.id) {
-        console.log(productsStorage.splice(index, index + 1));
+        productsStorage.splice(index, index + 1);
       }
     }); //Update the data from localstorage
 
@@ -37799,12 +37799,8 @@ function fillTableProducts(product) {
 
   if (localStorage.getItem('products') !== null && JSON.parse(localStorage.getItem('products')).length > 0) {
     if (NodeRows.length > 3) {
-      console.log('entre'); //Verify if the element already exists in the table
-
+      //Verify if the element already exists in the table
       NodeRows.forEach(function (node, index) {
-        console.log(index % 2);
-        console.log(node);
-
         if (index % 2 !== 0) {
           if (node.dataset.id === product.id) {
             exists = true;
