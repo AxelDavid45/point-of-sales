@@ -37789,17 +37789,20 @@ function deleteProductCart(e) {
 
 
 function fillTableProducts(product) {
-  var TableRows = productsTable.children;
-  var arrayRows = [];
+  var NodeRows = productsTable.childNodes;
+  var exists = false; //Verify if the element already exists in the table
 
-  for (i = 0; i >= TableRows.length; i++) {
-    arrayRows.push(TableRows[i]);
+  NodeRows.forEach(function (node, index) {
+    if (index % 2 != 0 && node.dataset.id === product.id) {
+      exists = true;
+    }
+  });
+
+  if (!exists) {
+    //Create the row
+    var row = "\n        <tr>\n            <td>".concat(product.id, "</td>\n            <td>").concat(product.name, "</td>\n            <td>\n               <button class=\"btn btn-success btn-sm\"\n                       data-name=\"").concat(product.name, "\"\n                       data-amount=\"1\"\n                       data-price=\"").concat(product.price, "\"\n                       data-id=\"").concat(product.id, "\"\n               >\n                  <i class=\"fas fa-plus\"></i>\n                  Agregar\n               </button>\n            </td>\n        </tr>");
+    productsTable.innerHTML += row;
   }
-
-  console.log(arrayRows); //Create the row
-
-  var row = "\n        <tr>\n            <td>".concat(product.id, "</td>\n            <td>").concat(product.name, "</td>\n            <td>\n               <button class=\"btn btn-success btn-sm\"\n                       data-name=\"").concat(product.name, "\"\n                       data-amount=\"1\"\n                       data-price=\"").concat(product.price, "\"\n                       data-id=\"").concat(product.id, "\"\n               >\n                  <i class=\"fas fa-plus\"></i>\n                  Agregar\n               </button>\n            </td>\n        </tr>");
-  productsTable.innerHTML += row;
 }
 /*
 * Handles the events, subtraction, addition, delete

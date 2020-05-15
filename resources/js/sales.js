@@ -39,7 +39,6 @@ function retrieveInformationStorage(e) {
     }, 1800);
 
 
-
 }
 
 
@@ -241,7 +240,7 @@ function modifyAmountOfProduct(e, modifier) {
 }
 
 function removeProductLocalStorage(product) {
-    if( localStorage.getItem('products') !== null ) {
+    if (localStorage.getItem('products') !== null) {
         //Get all the products in the localStorage
         let productsStorage = JSON.parse(localStorage.getItem('products'));
         //Verify if the product already exists
@@ -428,17 +427,18 @@ function deleteProductCart(e) {
 * Receives the product
 * */
 function fillTableProducts(product) {
-    let TableRows = productsTable.children;
-    let arrayRows = [];
+    let NodeRows = productsTable.childNodes;
+    let exists = false;
+    //Verify if the element already exists in the table
+    NodeRows.forEach((node, index) => {
+        if (index % 2 != 0 && node.dataset.id === product.id) {
+            exists = true;
+        }
+    });
 
-    for(i = 0; i >= TableRows.length; i++) {
-        arrayRows.push(TableRows[i]);
-    }
-
-    console.log(arrayRows);
-
-    //Create the row
-    let row = `
+    if (!exists) {
+        //Create the row
+        let row = `
         <tr>
             <td>${product.id}</td>
             <td>${product.name}</td>
@@ -454,8 +454,8 @@ function fillTableProducts(product) {
                </button>
             </td>
         </tr>`;
-
-    productsTable.innerHTML += row;
+        productsTable.innerHTML += row;
+    }
 }
 
 /*
