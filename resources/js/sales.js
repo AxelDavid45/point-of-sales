@@ -427,15 +427,19 @@ function deleteProductCart(e) {
 * Receives the product
 * */
 function fillTableProducts(product) {
-    let NodeRows = productsTable.childNodes;
     let exists = false;
-    //Verify if the element already exists in the table
-    NodeRows.forEach((node, index) => {
-        if (index % 2 != 0 && node.dataset.id === product.id) {
-            exists = true;
-        }
-    });
+    //Perform this verification if there are products in the local storage
+    if (localStorage.getItem('products') !== null && JSON.parse(localStorage.getItem('products')).length > 0) {
+        let NodeRows = productsTable.childNodes;
+        //Verify if the element already exists in the table
+        NodeRows.forEach((node, index) => {
+            if (index % 2 != 0 && node.dataset.id === product.id) {
+                exists = true;
+            }
+        });
+    }
 
+    //If does not exists create the row
     if (!exists) {
         //Create the row
         let row = `

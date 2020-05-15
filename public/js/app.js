@@ -37789,14 +37789,18 @@ function deleteProductCart(e) {
 
 
 function fillTableProducts(product) {
-  var NodeRows = productsTable.childNodes;
-  var exists = false; //Verify if the element already exists in the table
+  var exists = false; //Perform this verification if there are products in the local storage
 
-  NodeRows.forEach(function (node, index) {
-    if (index % 2 != 0 && node.dataset.id === product.id) {
-      exists = true;
-    }
-  });
+  if (localStorage.getItem('products') !== null && JSON.parse(localStorage.getItem('products')).length > 0) {
+    var NodeRows = productsTable.childNodes; //Verify if the element already exists in the table
+
+    NodeRows.forEach(function (node, index) {
+      if (index % 2 != 0 && node.dataset.id === product.id) {
+        exists = true;
+      }
+    });
+  } //If does not exists create the row
+
 
   if (!exists) {
     //Create the row
