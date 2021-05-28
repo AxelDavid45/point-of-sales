@@ -21,5 +21,8 @@
         "sass": "^1.20.1",
         "sass-loader": "^8.0.0",
         "vue-template-compiler": "^2.6.10"
+    },
+    "dependencies": {
+        "admin-lte": "^3.0.4"
     }
 }

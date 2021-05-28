@@ -12,18 +12,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        //Create the admin user
-//        User::create(
-//            [
-//                'name'          => 'Axel Espinosa',
-//                'email'         => 'axeldavid45@gmail.com',
-//                'phone'         => '9611581478',
-//                'email_verified_at' => time(),
-//                'password'      => Hash::make('123456789'),
-//                'administrator' => true
-//            ]
-//        );
-
         //Creating the cashier
         User::create(
             [

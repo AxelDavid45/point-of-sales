@@ -3,16 +3,22 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Product;
+use App\Sale;
 
 class HomeController extends Controller
 {
+    private Product $products;
+    private Sale $sales;
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Product $product, Sale $sales)
     {
+        $this->products = new $product();
+        $this->sales = new $sales();
         $this->middleware('auth');
     }
 
@@ -23,6 +29,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $soldThisMoth = $this->sales->getTotalSoldPerMonth(date('n'));
+        $totalProducts = $this->products->countProducts();
+        return view('home', compact('totalProducts', 'soldThisMoth'));
     }
 }

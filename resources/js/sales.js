@@ -1,26 +1,31 @@
-const productsTable = document.querySelector('#products-table');
-const cartTable = document.querySelector('#cartTable');
-const createSaleForm = document.querySelector('#createSaleForm');
-const errorSectionForm = document.querySelector('#js-requests-messages');
-const userid = document.querySelector('#user-id').value;
+"use strict";
+const API_URL = "/sales";
+const productsTable = document.querySelector("#products-table");
+const cartTable = document.querySelector("#cartTable");
+const createSaleForm = document.querySelector("#createSaleForm");
+const errorSectionForm = document.querySelector("#js-requests-messages");
+const userId = document.querySelector("#user-id")?.value;
 
 if (productsTable) {
-    document.addEventListener('DOMContentLoaded', retrieveInformationStorage);
-    productsTable.addEventListener('click', addToCartOneProduct);
-    cartTable.addEventListener('click', cartEvents);
-    createSaleForm.addEventListener('submit', storeSale);
+    document.addEventListener("DOMContentLoaded", retrieveInformationStorage);
+    productsTable.addEventListener("click", addToCartOneProduct);
+    cartTable.addEventListener("click", cartEvents);
+    createSaleForm.addEventListener("submit", storeSale);
 }
 
 //Bring back the information available in the localstorage
 function retrieveInformationStorage(e) {
     //Get the spinner div
-    let spinner = document.querySelector('.loading-spinner');
+    let spinner = document.querySelector(".loading-spinner");
 
     //Verify if exists data in the localStorage
-    if (localStorage.getItem('products') !== null && JSON.parse(localStorage.getItem('products')).length > 0) {
+    if (
+        localStorage.getItem("products") !== null &&
+        JSON.parse(localStorage.getItem("products")).length > 0
+    ) {
         //Get the information from localStorage
-        let total = localStorage.getItem('total');
-        let productsStorage = JSON.parse(localStorage.getItem('products'));
+        let total = localStorage.getItem("total");
+        let productsStorage = JSON.parse(localStorage.getItem("products"));
 
         setTimeout(() => {
             //Fill the cart with the products from localStorage
@@ -31,65 +36,61 @@ function retrieveInformationStorage(e) {
             //Set the total in html
             document.querySelector("#cartTotal").innerHTML = total;
         }, 1100);
-
-
     }
 
     setTimeout(() => {
-        spinner.classList.add('d-none');
+        spinner.classList.add("d-none");
     }, 1500);
-
-
 }
 
-
 /*
-* Verify the fields in the form
-* fields contains
-* index 0 --- products list
-* index 1 --- rfc field
-* index 2 --- total amount
-*
-* returns and array
-* */
+ * Verify the fields in the form
+ * fields contains
+ * index 0 --- products list
+ * index 1 --- rfc field
+ * index 2 --- total amount
+ *
+ * returns and array
+ * */
 function verifyFields(fields) {
     let verificationErrors = [];
 
     if (fields[0].length === 0) {
-        verificationErrors.push('Carrito Vacio');
+        verificationErrors.push("Carrito Vacio");
     }
-    if (fields[1] === '') {
-        verificationErrors.push('Escoge un RFC');
+    if (fields[1] === "") {
+        verificationErrors.push("Escoge un RFC");
     }
     if (fields[2] == 0) {
-        verificationErrors.push('Agrega al menos un producto para poder realizar la venta');
+        verificationErrors.push(
+            "Agrega al menos un producto para poder realizar la venta"
+        );
     }
     return verificationErrors;
 }
 
 /*
-* Store the sale and send a AJAX request to store the data
-* */
-function storeSale(e) {
+ * Store the sale and send a AJAX request to store the data
+ * */
+async function storeSale(e) {
     e.preventDefault();
-    const route = '/sales';
 
-    // Get all the fields and values
-    let products = document.querySelectorAll('.product');
-    let clientRfc = document.querySelector('#rfc').value;
+    let products = document.querySelectorAll(".product");
+    let clientRfc = document.querySelector("#rfc").value;
     let productsArray = [];
-    let token = document.getElementsByName('_token')[0].value;
-    let cartTotal = document.querySelector('#cartTotal').innerText;
+    let token = document.getElementsByName("_token")[0].value;
+    let cartTotal = document.querySelector("#cartTotal").innerText;
 
     //Fill the product array with every product data
-    products.forEach((product, index) => {
+    products.forEach(product => {
         let productId = product.children[0].innerText;
         let productName = product.children[1].innerText;
-        let productAmount = product.children[2].children[0].children[1].innerText;
+        let productAmount =
+            product.children[2].children[0].children[1].innerText;
         productsArray.push({
-            'id': productId,
-            'name': productName,
-            'amount': productAmount
+            id: productId,
+            name: productName,
+            amount: productAmount
         });
     });
 
@@ -101,65 +102,85 @@ function storeSale(e) {
     if (verification.length === 0) {
         // //Create the form data
         const formData = new FormData();
-        //Fill the formdata
-        formData.append('rfc', clientRfc);
-        formData.append('products', JSON.stringify(productsArray));
-        formData.append('total', cartTotal);
-        formData.append('_token', token);
-        formData.append('id', userid);
 
-        //Create the AJAX request
-        const xhr = new XMLHttpRequest();
-        xhr.open('POST', route, true);
-        //Header with the CSRF protection
-        xhr.setRequestHeader('X-CSRF-TOKEN', token);
-        //Header specifying AJAX request
-        xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+        //Fill the FormData
+        formData.append("rfc", clientRfc);
 
-        xhr.onload = function () {
+        let products = null;
+        try {
+            products = JSON.stringify(productsArray);
+        } catch (err) {
+            products = [];
+        }
+
+        formData.append("products", products);
+        formData.append("total", cartTotal);
+        formData.append("_token", token);
+        formData.append("id", userId);
+
+        try {
+            const request = await fetch(API_URL, {
+                method: "post",
+                headers: {
+                    "X-CSRF-TOKEN": token,
+                    "X-Requested-With": "XMLHttpRequest"
+                },
+                body: formData
+            });
+
             //Created
-            if (this.status === 201) {
-                showRequestsMessages('Venta creada exitosamente', 'success');
+            if (request.status === 201) {
+                showRequestsMessages("Venta creada exitosamente", "success");
                 resetCart();
                 createSaleForm.reset();
                 location.reload();
                 resetLocalStorage();
             }
+
             //Backend verification errors
-            if (this.status === 422) {
-                let response = JSON.parse(this.response);
+            if (request.status === 422) {
+                let response = await request.json();
                 let errors = response.errors;
 
                 if (errors.rfc) {
-                    showRequestsMessages('Escoge un RFC para continuar', 'danger');
+                    showRequestsMessages(
+                        "Escoge un RFC para continuar",
+                        "danger"
+                    );
                 }
 
                 if (errors.total) {
-                    showRequestsMessages('El total debe ser mayor a 0, debe contener al menos un' +
-                        ' producto', 'danger');
+                    showRequestsMessages(
+                        "El total debe ser mayor a 0, debe contener al menos un" +
+                            " producto",
+                        "danger"
+                    );
                 }
             }
             //Server errors
-            if (this.status === 500) {
-                showRequestsMessages('Venta parcialmente creada, anota los productos que el' +
-                    ' cliente compro y comunicate con el equipo de sistemas', 'warning');
+            if (request.status === 500) {
+                showRequestsMessages(
+                    "Venta parcialmente creada, anota los productos que el" +
+                        " cliente compro y comunicate con el equipo de sistemas",
+                    "warning"
+                );
             }
-        };
-        //Send the information
-        xhr.send(formData);
+        } catch (err) {
+            showRequestsMessages(`Error interno ${err.message}`, "danger");
+        }
     } else {
         //Map the errors in the client
-        verification.forEach((error) => {
-            showRequestsMessages(error, 'danger');
-        })
+        verification.forEach(error => {
+            showRequestsMessages(error, "danger");
+        });
     }
 }
 
 /*
-* Map all the messages in the client
-* Message needed
-* Level ---- bootstrap alert class color
-* */
+ * Map all the messages in the client
+ * Message needed
+ * Level ---- bootstrap alert class color
+ * */
 function showRequestsMessages(message, level) {
     let html = `
     <div class="alert alert-${level}">
@@ -168,58 +189,59 @@ function showRequestsMessages(message, level) {
     `;
     errorSectionForm.innerHTML += html;
     setTimeout(() => {
-        errorSectionForm.innerHTML = '';
-    }, 3500)
+        errorSectionForm.innerHTML = "";
+    }, 3500);
 }
 
 /*
-* Deletes all the elements in the cart table
-* */
+ * Deletes all the elements in the cart table
+ * */
 function resetCart() {
     while (cartTable.childNodes.length > 0) {
-        cartTable.childNodes.forEach((e) => {
+        cartTable.childNodes.forEach(e => {
             e.remove();
         });
     }
 
-    document.querySelector('#cartTotal').innerText = '0';
-
+    document.querySelector("#cartTotal").innerText = "0";
 }
 
 /*
-* Subtract one by one the amount of product or
-* add one by one the amount of product
-* */
+ * Subtract one by one the amount of product or
+ * add one by one the amount of product
+ * */
 function modifyAmountOfProduct(e, modifier) {
     e.preventDefault();
     //Get the current amount of product
-    let amountOfProductNumeric = parseFloat(e.target.parentElement.childNodes[3].innerText);
+    let amountOfProductNumeric = parseFloat(
+        e.target.parentElement.childNodes[3].innerText
+    );
     //Get the element with the amount of product
     let amountOfProductElement = e.target.parentElement.childNodes[3];
     //Get the price of the product
     let productPrice = parseFloat(e.target.dataset.price);
     // Create a object for update the total
     let productObject = {
-        'id': e.target.dataset.id,
-        'amount': amountOfProductNumeric,
-        'name': e.target.dataset.name,
-        'price': productPrice
+        id: e.target.dataset.id,
+        amount: amountOfProductNumeric,
+        name: e.target.dataset.name,
+        price: productPrice
     };
 
     //The default value for every product added to the cart
     let finalAmount = 1;
 
     //Verify which modifier is and update the total using the product information
-    if (modifier === '+') {
+    if (modifier === "+") {
         finalAmount = amountOfProductNumeric + 1;
         //Update the total
-        updateTotal(productObject, '+');
+        updateTotal(productObject, "+");
     }
 
-    if (modifier === '-') {
+    if (modifier === "-") {
         finalAmount = amountOfProductNumeric - 1;
         //Update the total
-        updateTotal(productObject, '-');
+        updateTotal(productObject, "-");
     }
 
     //If the amount is 0 remove the item and add it to the products table again
@@ -238,13 +260,12 @@ function modifyAmountOfProduct(e, modifier) {
         //Update the amount of product in the localStorage
         addProductToLocalStorage(productObject);
     }
-
 }
 
 function removeProductLocalStorage(product) {
-    if (localStorage.getItem('products') !== null) {
+    if (localStorage.getItem("products") !== null) {
         //Get all the products in the localStorage
-        let productsStorage = JSON.parse(localStorage.getItem('products'));
+        let productsStorage = JSON.parse(localStorage.getItem("products"));
         //Verify if the product already exists
         productsStorage.forEach((content, index) => {
             //If exists delete the element
@@ -254,30 +275,30 @@ function removeProductLocalStorage(product) {
         });
 
         //Update the data from localstorage
-        localStorage.setItem('products', JSON.stringify(productsStorage));
+        localStorage.setItem("products", JSON.stringify(productsStorage));
     }
 }
 
 /*
-* Add the product selected in table products to the cart, update the total and
-* delete it from products table
-* */
+ * Add the product selected in table products to the cart, update the total and
+ * delete it from products table
+ * */
 function addToCartOneProduct(e) {
     e.preventDefault();
 
     let btnAdd = e.target;
 
-    if (btnAdd.classList[0] === 'btn') {
+    if (btnAdd.classList[0] === "btn") {
         //Create an object to handle the creation later
         let product = {
-            'id': btnAdd.dataset.id,
-            'amount': 1,
-            'name': btnAdd.dataset.name,
-            'price': btnAdd.dataset.price
+            id: btnAdd.dataset.id,
+            amount: 1,
+            name: btnAdd.dataset.name,
+            price: btnAdd.dataset.price
         };
 
         //Update the total
-        updateTotal(product, '+');
+        updateTotal(product, "+");
 
         //Add the html to the cart with all the information
         appendProductToCart(product);
@@ -294,7 +315,6 @@ function addToCartOneProduct(e) {
 
 //Print the html in the cart table
 function appendProductToCart(product) {
-
     //Append the new product to the cart table
     cartTable.innerHTML += `
         <tr class="product">
@@ -331,7 +351,6 @@ function appendProductToCart(product) {
         `;
 }
 
-
 /**
  * Add a product object in the local storage key products.Besides verify if an element already exists
  * and update the amount.
@@ -340,14 +359,14 @@ function addProductToLocalStorage(product) {
     //Create the initial structure of the JSON
     let productsJson = [];
     //Verify if exists products in localStorage
-    if (localStorage.getItem('products') === null) {
+    if (localStorage.getItem("products") === null) {
         //Add the first product
         productsJson.push(product);
         //Add the JSON to localStorage
-        localStorage.setItem('products', JSON.stringify(productsJson));
+        localStorage.setItem("products", JSON.stringify(productsJson));
     } else {
         //Get all the products in the localStorage
-        let productsStorage = JSON.parse(localStorage.getItem('products'));
+        let productsStorage = JSON.parse(localStorage.getItem("products"));
         let productExists = false;
         //Verify if the product already exists and updated
         productsStorage.forEach((content, index) => {
@@ -363,28 +382,30 @@ function addProductToLocalStorage(product) {
             //Add the new product to the JSON of products
             productsStorage.push(product);
             //Update the products value in local storage
-            localStorage.setItem('products', JSON.stringify(productsStorage));
+            localStorage.setItem("products", JSON.stringify(productsStorage));
         } else {
             //Update the product data in localstorage
-            localStorage.setItem('products', JSON.stringify(productsStorage));
+            localStorage.setItem("products", JSON.stringify(productsStorage));
         }
     }
 }
 
 /*
-* Update the cart total depends on the modifier
-* */
+ * Update the cart total depends on the modifier
+ * */
 function updateTotal(product, modifier) {
     //Get the total element
-    let total = document.querySelector('#cartTotal');
+    let total = document.querySelector("#cartTotal");
     //Default value for total
     let totalUpdated = 0;
     //Verify which modifier is and update the total
-    if (modifier === '-') {
-        totalUpdated = parseFloat(total.innerText.toString()) - parseFloat(product.price);
+    if (modifier === "-") {
+        totalUpdated =
+            parseFloat(total.innerText.toString()) - parseFloat(product.price);
     }
-    if (modifier === '+') {
-        totalUpdated = parseFloat(product.price) + parseFloat(total.innerText.toString());
+    if (modifier === "+") {
+        totalUpdated =
+            parseFloat(product.price) + parseFloat(total.innerText.toString());
     }
 
     //Make amounts positive
@@ -395,27 +416,28 @@ function updateTotal(product, modifier) {
     //Update total amount in the html
     total.innerText = totalUpdated;
     //Update the total in the localstorage
-    localStorage.setItem('total', totalUpdated.toString());
-
+    localStorage.setItem("total", totalUpdated.toString());
 }
 
 /*
-* Removes the product of cart table and added again to products table
-* */
+ * Removes the product of cart table and added again to products table
+ * */
 function deleteProductCart(e) {
     e.preventDefault();
     let btnDelete = e.target;
     //Current amount of product
-    let amountOfProductNumeric = e.target.parentElement.parentElement.parentElement.children[2].children[0].children[1].innerText;
+    let amountOfProductNumeric =
+        e.target.parentElement.parentElement.parentElement.children[2]
+            .children[0].children[1].innerText;
     //Create the product object
     let product = {
-        'id': btnDelete.dataset.id,
-        'amount': btnDelete.dataset.amount,
-        'name': btnDelete.dataset.name,
-        'price': parseFloat(btnDelete.dataset.price) * amountOfProductNumeric
+        id: btnDelete.dataset.id,
+        amount: btnDelete.dataset.amount,
+        name: btnDelete.dataset.name,
+        price: parseFloat(btnDelete.dataset.price) * amountOfProductNumeric
     };
     //Update the total
-    updateTotal(product, '-');
+    updateTotal(product, "-");
     //Get the whole row of a product
     let productRow = btnDelete.parentElement.parentElement.parentElement;
     //Add the product again to the table products
@@ -426,16 +448,17 @@ function deleteProductCart(e) {
 }
 
 /*
-* Handles the creation of a new row in the products table
-* Receives the product
-* */
+ * Handles the creation of a new row in the products table
+ * Receives the product
+ * */
 function fillTableProducts(product) {
     let exists = false;
     //Elements in the table
     let NodeRows = productsTable.childNodes;
     //Perform this verification if there are products in the local storage
-    if (localStorage.getItem('products') !== null
-        && JSON.parse(localStorage.getItem('products')).length > 0
+    if (
+        localStorage.getItem("products") !== null &&
+        JSON.parse(localStorage.getItem("products")).length > 0
     ) {
         if (NodeRows.length > 3) {
             //Verify if the element already exists in the table
@@ -444,7 +467,6 @@ function fillTableProducts(product) {
                     if (node.dataset.id === product.id) {
                         exists = true;
                     }
-
                 }
             });
         }
@@ -475,26 +497,25 @@ function fillTableProducts(product) {
 
 //Clear the localStorage
 function resetLocalStorage() {
-    if (localStorage.getItem('products') !== null) {
+    if (localStorage.getItem("products") !== null) {
         localStorage.clear();
     }
 }
 
 /*
-* Handles the events, subtraction, addition, delete
-* */
+ * Handles the events, subtraction, addition, delete
+ * */
 function cartEvents(e) {
     e.preventDefault();
-    if (e.target.classList[2] === 'delete') {
+    if (e.target.classList[2] === "delete") {
         deleteProductCart(e);
     }
 
-    if (e.target.classList[0] === 'sum') {
-        modifyAmountOfProduct(e, '+');
+    if (e.target.classList[0] === "sum") {
+        modifyAmountOfProduct(e, "+");
     }
 
-    if (e.target.classList[0] === 'subs') {
-        modifyAmountOfProduct(e, '-');
+    if (e.target.classList[0] === "subs") {
+        modifyAmountOfProduct(e, "-");
     }
-
 }
