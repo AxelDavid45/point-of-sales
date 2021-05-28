@@ -48,4 +48,8 @@ class Sale extends Model
     {
         return DB::table('sales')->select(DB::raw('sum(total) as total'))->whereRaw("month(created_at) = $month")->value('total');
     }
+
+    public function getSalesInAYear() {
+        return DB::table('sales')->select(DB::raw('Month(created_at) as Month, sum(total) as total'))->groupByRaw(DB::raw('month(created_at)'))->orderByRaw(DB::raw('month(created_at)'))->get();
+    }
 }

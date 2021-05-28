@@ -1,10 +1,9 @@
 "use strict";
-const API_URL = "/sales";
+import { SALES_URL } from "./environment";
 const productsTable = document.querySelector("#products-table");
 const cartTable = document.querySelector("#cartTable");
 const createSaleForm = document.querySelector("#createSaleForm");
 const errorSectionForm = document.querySelector("#js-requests-messages");
-const userId = document.querySelector("#user-id")?.value;
 
 if (productsTable) {
     document.addEventListener("DOMContentLoaded", retrieveInformationStorage);
@@ -29,7 +28,7 @@ function retrieveInformationStorage(e) {
 
         setTimeout(() => {
             //Fill the cart with the products from localStorage
-            productsStorage.forEach(product => {
+            productsStorage.forEach((product) => {
                 appendProductToCart(product);
             });
 
@@ -80,9 +79,10 @@ async function storeSale(e) {
     let productsArray = [];
     let token = document.getElementsByName("_token")[0].value;
     let cartTotal = document.querySelector("#cartTotal").innerText;
+    const userId = document.querySelector("#user-id").value;
 
     //Fill the product array with every product data
-    products.forEach(product => {
+    products.forEach((product) => {
         let productId = product.children[0].innerText;
         let productName = product.children[1].innerText;
         let productAmount =
@@ -90,7 +90,7 @@ async function storeSale(e) {
         productsArray.push({
             id: productId,
             name: productName,
-            amount: productAmount
+            amount: productAmount,
         });
     });
 
@@ -119,13 +119,13 @@ async function storeSale(e) {
         formData.append("id", userId);
 
         try {
-            const request = await fetch(API_URL, {
+            const request = await fetch(SALES_URL, {
                 method: "post",
                 headers: {
                     "X-CSRF-TOKEN": token,
-                    "X-Requested-With": "XMLHttpRequest"
+                    "X-Requested-With": "XMLHttpRequest",
                 },
-                body: formData
+                body: formData,
             });
 
             //Created
@@ -170,7 +170,7 @@ async function storeSale(e) {
         }
     } else {
         //Map the errors in the client
-        verification.forEach(error => {
+        verification.forEach((error) => {
             showRequestsMessages(error, "danger");
         });
     }
@@ -198,7 +198,7 @@ function showRequestsMessages(message, level) {
  * */
 function resetCart() {
     while (cartTable.childNodes.length > 0) {
-        cartTable.childNodes.forEach(e => {
+        cartTable.childNodes.forEach((e) => {
             e.remove();
         });
     }
@@ -225,7 +225,7 @@ function modifyAmountOfProduct(e, modifier) {
         id: e.target.dataset.id,
         amount: amountOfProductNumeric,
         name: e.target.dataset.name,
-        price: productPrice
+        price: productPrice,
     };
 
     //The default value for every product added to the cart
@@ -294,7 +294,7 @@ function addToCartOneProduct(e) {
             id: btnAdd.dataset.id,
             amount: 1,
             name: btnAdd.dataset.name,
-            price: btnAdd.dataset.price
+            price: btnAdd.dataset.price,
         };
 
         //Update the total
@@ -434,7 +434,7 @@ function deleteProductCart(e) {
         id: btnDelete.dataset.id,
         amount: btnDelete.dataset.amount,
         name: btnDelete.dataset.name,
-        price: parseFloat(btnDelete.dataset.price) * amountOfProductNumeric
+        price: parseFloat(btnDelete.dataset.price) * amountOfProductNumeric,
     };
     //Update the total
     updateTotal(product, "-");

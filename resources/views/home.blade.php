@@ -17,23 +17,36 @@
 <div class="content">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-6">
-                <div class="info-box mb-3 bg-warning">
-                    <span class="info-box-icon"><i class="fas fa-tag"></i></span>
-                    <div class="info-box-content">
-                        <span class="info-box-text">Productos en inventario</span>
-                        <span class="info-box-number">{{ $totalProducts }}</span>
+            <div class="col-8">
+                <div class="card">
+                    <div class="card-body">
+                        <canvas id="sales-chart"></canvas>
                     </div>
                 </div>
             </div>
-            <div class="col-6">
-                <div class="info-box mb-3 bg-success">
-                    <span class="info-box-icon"><i class="fas fa-money-check-alt"></i></span>
-                    <div class="info-box-content">
-                        <span class="info-box-text">Ingresos del mes</span>
-                        <span class="info-box-number">${{ $soldThisMoth }}</span>
+            <div class="col-4">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="info-box mb-3 bg-warning">
+                            <span class="info-box-icon"><i class="fas fa-tag"></i></span>
+                            <div class="info-box-content">
+                                <span class="info-box-text">Productos en inventario</span>
+                                <span class="info-box-number">{{ $totalProducts }}</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
+                <div class="row">
+                        <div class="col-12">
+                            <div class="info-box mb-3 bg-success">
+                                <span class="info-box-icon"><i class="fas fa-money-check-alt"></i></span>
+                                <div class="info-box-content">
+                                    <span class="info-box-text">Ingresos del mes</span>
+                                    <span class="info-box-number">${{ $soldThisMoth }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
             </div>
         </div>
         <div class="row">
@@ -110,5 +123,4 @@
         </div>
     </div><!-- /.container-fluid -->
 </div>
-<!-- /.content -->
 @endsection
