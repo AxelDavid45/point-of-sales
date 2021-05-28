@@ -7,25 +7,19 @@
     <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-    <style>
-        .body {
-
-
-        }
-    </style>
 </head>
 <body
-    style="background-image: url('https://images.unsplash.com/photo-1536939459926-301728717817?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80');
+    style="background-image: url('https://images.unsplash.com/photo-1560250056-07ba64664864?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1934&q=80');
            background-position: center;
            background-size: cover;"
     class="hold-transition login-page">
-<div class="login-box">
+<div class="login-box" style="opacity: 0.9;">
     <div class="login-logo">
-        <img style="width: 100%" src="https://kandmaster.com/logotipo.png" alt="">
+    <h1 class="text-light bg-navy">POS-X</h1>
     </div>
-    <!-- /.login-logo -->
     <div class="card">
         <div class="card-body login-card-body">
+
             <p class="login-box-msg">Inicia sesión para comenzar a vender</p>
 
             @if($errors->any())
@@ -59,18 +53,10 @@
                 <div class="row">
                     <div class="col">
                         @csrf
-                        <input type="submit" class="btn btn-dark" value="Iniciar sesion">
+                        <input type="submit" class="btn btn-primary" value="Iniciar sesion">
                     </div>
                 </div>
             </form>
-            <div class="row">
-                <div class="col">
-                    <a href="https://unsplash.com/photos/OTDyDgPoJ_0" class="text-muted text-sm">Photo
-                        by
-                        Jonathan
-                        Chng</a>
-                </div>
-            </div>
         </div>
         <!-- /.login-card-body -->
     </div>

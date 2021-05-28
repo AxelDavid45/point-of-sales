@@ -4,5 +4,6 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-require('./bootstrap');
-require('./sales');
+require("./bootstrap");
+require("./sales");
+require("./charts/month-sales");

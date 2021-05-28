@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Product extends Model
 {
@@ -19,5 +20,10 @@ class Product extends Model
 
     public function getGetExtractAttribute() {
         return substr($this->description, 0, 50);
+    }
+
+    public function countProducts() {
+        $products = DB::table('products')->count();
+        return $products;
     }
 }

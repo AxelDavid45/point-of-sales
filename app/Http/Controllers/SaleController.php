@@ -117,4 +117,18 @@ class SaleController extends Controller
         }
         return back()->with('deleted', true);
     }
+
+    public function salesInAYear() {
+        $sale = new Sale();
+        return $sale->getSalesInAYear();
+    }
+
+    public function salesInThisMonth(int $month) {
+        $sale = new Sale();
+        $sales = $sale->getTotalSoldPerMonth($month);
+        if (!$sales) {
+            return 0;
+        }
+        return $sales;
+    }
 }
