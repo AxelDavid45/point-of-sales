@@ -15,7 +15,7 @@ class Sale extends Model
     public $incrementing = true;
 
     protected $fillable = [
-        'total', 'rfc', 'id', 'created'
+        'total', 'rfc', 'id', 'created_at'
     ];
 
 
@@ -49,7 +49,17 @@ class Sale extends Model
         return DB::table('sales')->select(DB::raw('sum(total) as total'))->whereRaw("month(created_at) = $month")->value('total');
     }
 
-    public function getSalesInAYear() {
+    public function getSalesInAYear()
+    {
         return DB::table('sales')->select(DB::raw('Month(created_at) as Month, sum(total) as total'))->groupByRaw(DB::raw('month(created_at)'))->orderByRaw(DB::raw('month(created_at)'))->get();
+    }
+
+    public function getSalesByDay(int $month)
+    {
+        return DB::table('sales')->select(DB::raw('sum(total) as total, day(created_at) as day'))
+        ->whereRaw("month(created_at) = $month")
+        ->groupByRaw(DB::raw('day(created_at)'))
+        ->orderByRaw(DB::raw('day(created_at) ASC'))
+        ->get();
     }
 }

@@ -51142,6 +51142,8 @@ __webpack_require__(/*! ./sales */ "./resources/js/sales.js");
 
 __webpack_require__(/*! ./charts/month-sales */ "./resources/js/charts/month-sales.js");
 
+__webpack_require__(/*! ./charts/day-sales */ "./resources/js/charts/day-sales.js");
+
 /***/ }),
 
 /***/ "./resources/js/bootstrap.js":
@@ -51188,6 +51190,152 @@ window.axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     encrypted: true
 // });
+
+/***/ }),
+
+/***/ "./resources/js/charts/day-sales.js":
+/*!******************************************!*\
+  !*** ./resources/js/charts/day-sales.js ***!
+  \******************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var chart_js_auto__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! chart.js/auto */ "./node_modules/chart.js/auto/auto.esm.js");
+/* harmony import */ var _environment__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../environment */ "./resources/js/environment/index.js");
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+
+
+var ctx = document.getElementById("sales-month-chart");
+
+function fillData(_x) {
+  return _fillData.apply(this, arguments);
+}
+
+function _fillData() {
+  _fillData = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(month) {
+    var data, salesRequest, sales, i;
+    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            if (!(!month || month && typeof month !== 'number')) {
+              _context.next = 2;
+              break;
+            }
+
+            throw new Error('month must be a number');
+
+          case 2:
+            data = [];
+            _context.next = 5;
+            return fetch("".concat(_environment__WEBPACK_IMPORTED_MODULE_2__["API_URL"], "/charts/sales/day/").concat(month));
+
+          case 5:
+            salesRequest = _context.sent;
+            _context.next = 8;
+            return salesRequest.json();
+
+          case 8:
+            sales = _context.sent;
+
+            for (i = 0; i <= 31; i++) {
+              data[i] = 0;
+            }
+
+            sales.forEach(function (e) {
+              data[e.day - 1] = e.total;
+            });
+            return _context.abrupt("return", data);
+
+          case 12:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee);
+  }));
+  return _fillData.apply(this, arguments);
+}
+
+function createChart() {
+  return _createChart.apply(this, arguments);
+}
+
+function _createChart() {
+  _createChart = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
+    var date, month, labels, currentMonth, lastMonth, i, data, config;
+    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            date = new Date();
+            month = date.getMonth() + 1;
+            labels = [];
+            currentMonth = fillData(month);
+            lastMonth = fillData(month - 1);
+
+            for (i = 1; i <= 31; i++) {
+              labels[i - 1] = i;
+            }
+
+            _context2.t0 = labels;
+            _context2.next = 9;
+            return currentMonth;
+
+          case 9:
+            _context2.t1 = _context2.sent;
+            _context2.t2 = {
+              label: "Ventas del mes",
+              data: _context2.t1,
+              fill: false,
+              borderColor: "rgb(235, 204, 52)",
+              tension: 0.3
+            };
+            _context2.next = 13;
+            return lastMonth;
+
+          case 13:
+            _context2.t3 = _context2.sent;
+            _context2.t4 = {
+              label: "Ventas del mes anterior",
+              data: _context2.t3,
+              fill: false,
+              borderColor: "rgb(193, 194, 182)",
+              tension: 0.3
+            };
+            _context2.t5 = [_context2.t2, _context2.t4];
+            data = {
+              labels: _context2.t0,
+              datasets: _context2.t5
+            };
+            config = {
+              type: "line",
+              data: data
+            };
+            new chart_js_auto__WEBPACK_IMPORTED_MODULE_1__["default"](ctx, config);
+
+          case 19:
+          case "end":
+            return _context2.stop();
+        }
+      }
+    }, _callee2);
+  }));
+  return _createChart.apply(this, arguments);
+}
+
+if (ctx) {
+  createChart();
+}
 
 /***/ }),
 
@@ -51266,7 +51414,9 @@ function _createChart() {
   return _createChart.apply(this, arguments);
 }
 
-createChart();
+if (ctx) {
+  createChart();
+}
 
 /***/ }),
 

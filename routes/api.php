@@ -16,3 +16,4 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('charts/sales', 'SaleController@salesInAYear');
 Route::get('charts/sales/month/{month}', 'SaleController@salesInThisMonth');
+Route::get('charts/sales/day/{month}', 'SaleController@salesByDay');
