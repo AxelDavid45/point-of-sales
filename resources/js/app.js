@@ -7,3 +7,4 @@
 require("./bootstrap");
 require("./sales");
 require("./charts/month-sales");
+require("./charts/day-sales");

@@ -131,4 +131,13 @@ class SaleController extends Controller
         }
         return $sales;
     }
+
+    public function salesByDay(int $month) {
+        $sale = new Sale();
+        $sales = $sale->getSalesByDay($month);
+        if (!$sales) {
+            return 0;
+        }
+        return $sales;
+    }
 }
