@@ -46,4 +46,6 @@ async function createChart() {
     new Chart(ctx, config);
 }
 
-createChart();
+if (ctx) {
+    createChart();
+}
