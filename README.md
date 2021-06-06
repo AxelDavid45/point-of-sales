@@ -1,6 +1,26 @@
 # 💰Point of sales system💰
 This is the first release of this POS containing some useful features.
 
+
+## Installation
+
+***First you need to download docker on your machine in order to run the local environment.***
+
+```bash
+# move to the repository
+cd point-of-sales
+
+# start the services with docker-compose
+docker-compose up -d 
+
+# To run any command like 'php artisan' 'npm install' run it inside the container
+docker-compose exec app <your-command>
+
+# Example to lift up the migrations
+docker-compose exec app php artisan migrate --seed
+```
+
+
 ## Features 👌
 - Manage your clients.
 - Manage your products.
